@@ -10,7 +10,7 @@ RUN sudo apt-get update && sudo apt-get install -y \
     apt-utils \
     nano \
     ssh && \
-	sudo apt-get upgrade && \
+    sudo apt-get upgrade && \
     sudo apt-get clean && \ 
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 	 
@@ -25,6 +25,7 @@ RUN sudo apt-get update && sudo apt-get install -y \
 # Inspiration: https://stackoverflow.com/questions/32145650/how-to-set-mysql-username-in-dockerfile/32146887#32146887
 #
 ARG MY_MYSQL_SERVER_ROOT_PASSWORD='def-root'
+
 
 #DEBUG
 #=====
@@ -61,7 +62,7 @@ RUN { \
 
 
 # Mountable datafolder path
-VOLUME ["/var/lib/mysql"]
+# VOLUME ["/var/lib/mysql"]
 	
 	
 #TEST
