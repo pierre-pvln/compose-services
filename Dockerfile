@@ -7,12 +7,12 @@ MAINTAINER Pierre Veelen <pierre@pvln.nl>
 # ==========================================
 
 RUN sudo apt-get update && sudo apt-get install -y \
-    apt-utils \
-    nano \
-    ssh && \
-    sudo apt-get upgrade && \
-    sudo apt-get clean && \ 
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+       apt-utils \
+       nano \
+       ssh \
+    && sudo apt-get upgrade \
+    && sudo apt-get clean \ 
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 	 
 # =============================
 # END OF UTILITIES AND DEFAULTS
@@ -26,6 +26,9 @@ RUN sudo apt-get update && sudo apt-get install -y \
 #
 ARG MY_MYSQL_SERVER_ROOT_PASSWORD='def-root'
 
+# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
+RUN groupadd -r mysql \ 
+    && useradd -r -g mysql mysql
 
 #DEBUG
 #=====
@@ -47,10 +50,15 @@ RUN { \
         echo mysql-server-5.5 mysql-server/root_password_again password 'root'; \
     } | sudo debconf-set-selections \
     && sudo apt-get update && sudo apt-get install -y \
-        mysql-server && \
-    sudo apt-get upgrade && \
-	sudo apt-get clean && \ 
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+        mysql-server \
+    && sudo apt-get upgrade \
+    && sudo apt-get clean \ 
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    
+RUN rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql /var/run/mysqld \
+    && chown -R mysql:mysql /var/lib/mysql /var/run/mysqld \
+# ensure that /var/run/mysqld (used for socket and lock files) is writable regardless of the UID our mysqld instance ends up having at runtime
+    && chmod 777 /var/run/mysqld
 
 #
 # TODO: include mysql_secure_installation in container 
