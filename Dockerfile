@@ -1,97 +1,39 @@
+# Pull base image
 FROM resin/rpi-raspbian
 
 MAINTAINER Pierre Veelen <pierre@pvln.nl>
 
-# ==========================================
-# START OF INSTALLING UTILITIES AND DEFAULTS
-# ==========================================
-
-RUN sudo apt-get update && sudo apt-get install -y \
-       apt-utils \
-       nano \
-       ssh \
-    && sudo apt-get upgrade \
-    && sudo apt-get clean \ 
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-	 
-# =============================
-# END OF UTILITIES AND DEFAULTS
-# =============================
-
-# =========================
-# START OF INSTALLING MYSQL
-# =========================
-#
-# Inspiration: https://stackoverflow.com/questions/32145650/how-to-set-mysql-username-in-dockerfile/32146887#32146887
-#
-ARG MY_MYSQL_SERVER_ROOT_PASSWORD='def-root'
-
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-RUN groupadd -r mysql \ 
-    && useradd -r -g mysql mysql
+RUN groupadd -r mysql && useradd -r -g mysql mysql
 
-#DEBUG
-#=====
-# save info to file
-RUN echo $MY_MYSQL_SERVER_ROOT_PASSWORD > /root/MY_MYSQL_SERVER_ROOT_PASSWORD.txt
+# FATAL ERROR: please install the following Perl modules before executing /usr/local/mysql/scripts/mysql_install_db:
+# File::Basename
+# File::Copy
+# Sys::Hostname
+# Data::Dumper
+RUN apt-get update && apt-get install -y perl --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-#RUN { \ echo mysql-server-5.5 mysql-server/root_password password $MY_MYSQL_SERVER_ROOT_PASSWORD; \
-#        echo mysql-server-5.5 mysql-server/root_password_again password $MY_MYSQL_SERVER_ROOT_PASSWORD; \
-#    } | sudo debconf-set-selections \
-#    && sudo apt-get update && sudo apt-get install -y \
-#        mysql-server && \
-#    sudo apt-get clean && \ 
-#    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+ENV MYSQL_VERSION 5.5
 
-#  Install mysql-server and cleanup afterwards
-#
+# the "/var/lib/mysql" stuff here is because the mysql-server postinst doesn't have an explicit way to disable the mysql_install_db codepath besides having a database already "configured" (ie, stuff in /var/lib/mysql/mysql)
+# also, we set debconf keys to make APT a little quieter
 RUN { \
-        echo mysql-server-5.5 mysql-server/root_password password 'root'; \
-        echo mysql-server-5.5 mysql-server/root_password_again password 'root'; \
-    } | sudo debconf-set-selections \
-    && sudo apt-get update && sudo apt-get install -y \
-        mysql-server \
-    && sudo apt-get upgrade \
-    && sudo apt-get clean \ 
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-    
-RUN rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql /var/run/mysqld \
-    && chown -R mysql:mysql /var/lib/mysql /var/run/mysqld \
-# ensure that /var/run/mysqld (used for socket and lock files) is writable regardless of the UID our mysqld instance ends up having at runtime
-    && chmod 777 /var/run/mysqld
+		echo mysql-server mysql-server/data-dir select ''; \
+		echo mysql-server mysql-server/root-pass password ''; \
+		echo mysql-server mysql-server/re-root-pass password ''; \
+		echo mysql-server mysql-server/remove-test-db select false; \
+	} | debconf-set-selections \
+	&& apt-get update && apt-get install -y mysql-server="${MYSQL_VERSION}"* && rm -rf /var/lib/apt/lists/* \
+	&& rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql && chown -R mysql:mysql /var/lib/mysql
 
-#
-# TODO: include mysql_secure_installation in container 
-#
-#RUN sudo apt-get update && \
-#    sudo mysql_secure_installation && \
-#    sudo apt-get clean && \ 
-#    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# comment out a few problematic configuration values
+RUN sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/my.cnf
 
+VOLUME /var/lib/mysql
 
-# Mountable datafolder path
-# VOLUME ["/var/lib/mysql"]
-	
-	
-#TEST
-#====
-# Copy MySQL test scripts to home directory
-#
-ADD ./site/scripts/mysql /root/mysql
-RUN chmod -R +x /root/mysql/*.sh
+COPY entrypoint.sh /
+ENTRYPOINT ["/entrypoint.sh"]
 
-# =======================
-# END OF INSTALLING MYSQL
-# =======================
+EXPOSE 3306
 
-
-# =======================
-# ENTRYPOINT & CMD
-# =======================
-# Cancel pre-defined start-up instruction and allow us to use our own.
-#ENTRYPOINT []
-
-ADD ./entrypoint.sh /usr/local/bin/
-ENTRYPOINT ["/bin/bash","entrypoint.sh"]
- 
-CMD /bin/bash
+CMD ["mysqld"]
