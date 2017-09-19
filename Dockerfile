@@ -4,7 +4,14 @@ FROM resin/rpi-raspbian
 MAINTAINER Pierre Veelen <pierre@pvln.nl>
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-RUN groupadd -r mysql && useradd -r -g mysql mysql
+# https://manpages.debian.org/jessie/passwd/groupadd.8.en.html
+# https://manpages.debian.org/jessie/passwd/useradd.8.en.html
+# 
+# raspberry pi uses groups 999(spi), 998(i2c), 997(gpio)
+# http://www.arne.jachens.de/RaspberryPi#SPIBus
+#
+RUN groupadd --system --gid 995 mysql \ 
+    && useradd --system -uid 995 -g mysql mysql
 
 # FATAL ERROR: please install the following Perl modules before executing /usr/local/mysql/scripts/mysql_install_db:
 # File::Basename
