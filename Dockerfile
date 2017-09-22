@@ -11,7 +11,7 @@ MAINTAINER Pierre Veelen <pierre@pvln.nl>
 # http://www.arne.jachens.de/RaspberryPi#SPIBus
 #
 RUN groupadd --system --gid 995 mysql \ 
-    && useradd --system -uid 995 -g mysql mysql
+    && useradd --system --uid 995 -g mysql mysql
 
 # FATAL ERROR: please install the following Perl modules before executing /usr/local/mysql/scripts/mysql_install_db:
 # File::Basename
