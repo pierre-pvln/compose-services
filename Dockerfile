@@ -7,8 +7,9 @@ MAINTAINER Pierre Veelen <pierre@pvln.nl>
 # https://manpages.debian.org/jessie/passwd/groupadd.8.en.html
 # https://manpages.debian.org/jessie/passwd/useradd.8.en.html
 # 
-# raspberry pi uses groups 999(spi), 998(i2c), 997(gpio)
+# raspberry pi uses system groups 999(spi), 998(i2c), 997(gpio)
 # http://www.arne.jachens.de/RaspberryPi#SPIBus
+# and therefore gid is set to 995.
 #
 RUN groupadd --system --gid 995 mysql \ 
     && useradd --system --uid 995 -g mysql mysql
