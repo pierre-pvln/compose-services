@@ -5,5 +5,5 @@ Structure:
 - platform
 	-service-name_version
 		- Dockerfile
-        - README.md
-        - site 
+        	- README.md
+        	- site 
