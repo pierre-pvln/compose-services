@@ -6,13 +6,13 @@ MAINTAINER Pierre Veelen <pierre@pvln.nl>
 # START OF INSTALLING UTILITIES AND DEFAULTS
 # ==========================================
 
-RUN sudo apt-get update && sudo apt-get install -y \
-    apt-utils \
-    nano \
-    ssh && \
-	sudo apt-get upgrade && \
-    sudo apt-get clean && \ 
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+###RUN sudo apt-get update && sudo apt-get install -y \
+###    apt-utils \
+###    nano \
+###    ssh && \
+###	   sudo apt-get upgrade && \
+###    sudo apt-get clean && \ 
+###    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 	 
 # =============================
 # END OF UTILITIES AND DEFAULTS
@@ -52,13 +52,17 @@ ENV APACHE_RUN_USER=www-data \
 #
 EXPOSE 80
 
+# Mountable datafolder path
+VOLUME ["/var/www/${MY_APACHE2_SITENAME}"]
+
+
 # Copy this repo into place
 #
-ADD ./site/default /var/www/$MY_APACHE2_SITENAME
+ADD ./site/default /var/www/${MY_APACHE2_SITENAME}
 
 # set ownership of files
 #
-RUN chown -Rf $APACHE_RUN_USER:$APACHE_RUN_GROUP /var/www/$MY_APACHE2_SITENAME
+RUN chown -Rf $APACHE_RUN_USER:$APACHE_RUN_GROUP /var/www/${MY_APACHE2_SITENAME}
 
 # Update the default apache site with the config we created.
 #
@@ -68,7 +72,7 @@ ADD ./configs/apache2-config.conf /etc/apache2/sites-enabled/000-default.conf
 # sed -i "s/TextFrom/TextTo/" inWhichFile
 # \/ is used to escape the / in the file path
 #
-RUN sed -i "s/var\/www\/site/var\/www\/$MY_APACHE2_SITENAME/" /etc/apache2/sites-enabled/000-default.conf
+RUN sed -i "s/var\/www\/site/var\/www\/${MY_APACHE2_SITENAME}/" /etc/apache2/sites-enabled/000-default.conf
 
 # TODO CHANGE WEBSITE SERVERNAME TO PREVENT WARNING
 
@@ -113,12 +117,12 @@ RUN a2enmod php5
 #
 # Inspiration: https://stackoverflow.com/questions/32145650/how-to-set-mysql-username-in-dockerfile/32146887#32146887
 #
-ARG MY_MYSQL_SERVER_ROOT_PASSWORD='def-root'
+###ARG MY_MYSQL_SERVER_ROOT_PASSWORD='def-root'
 
 #DEBUG
 #=====
 # save info to file
-RUN echo $MY_MYSQL_SERVER_ROOT_PASSWORD > /root/MY_MYSQL_SERVER_ROOT_PASSWORD.txt
+###RUN echo $MY_MYSQL_SERVER_ROOT_PASSWORD > /root/MY_MYSQL_SERVER_ROOT_PASSWORD.txt
 
 #RUN { \ echo mysql-server-5.5 mysql-server/root_password password $MY_MYSQL_SERVER_ROOT_PASSWORD; \
 #        echo mysql-server-5.5 mysql-server/root_password_again password $MY_MYSQL_SERVER_ROOT_PASSWORD; \
@@ -130,15 +134,15 @@ RUN echo $MY_MYSQL_SERVER_ROOT_PASSWORD > /root/MY_MYSQL_SERVER_ROOT_PASSWORD.tx
 
 #  Install mysql-server and cleanup afterwards
 #
-RUN { \
-        echo mysql-server-5.5 mysql-server/root_password password 'root'; \
-        echo mysql-server-5.5 mysql-server/root_password_again password 'root'; \
-    } | sudo debconf-set-selections \
-    && sudo apt-get update && sudo apt-get install -y \
-        mysql-server && \
-    sudo apt-get upgrade && \
-	sudo apt-get clean && \ 
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+###RUN { \
+###        echo mysql-server-5.5 mysql-server/root_password password 'root'; \
+###        echo mysql-server-5.5 mysql-server/root_password_again password 'root'; \
+###    } | sudo debconf-set-selections \
+###    && sudo apt-get update && sudo apt-get install -y \
+###        mysql-server && \
+###    sudo apt-get upgrade && \
+###	sudo apt-get clean && \ 
+###    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #
 # TODO: include mysql_secure_installation in container 
@@ -150,15 +154,15 @@ RUN { \
 
 
 # Mountable datafolder path
-VOLUME ["/var/lib/mysql"]
+###VOLUME ["/var/lib/mysql"]
 	
 	
 #TEST
 #====
 # Copy MySQL test scripts to home directory
 #
-ADD ./site/scripts/mysql /root/mysql
-RUN chmod -R +x /root/mysql/*.sh
+###ADD ./site/scripts/mysql /root/mysql
+###RUN chmod -R +x /root/mysql/*.sh
 
 # =======================
 # END OF INSTALLING MYSQL
@@ -170,16 +174,16 @@ RUN chmod -R +x /root/mysql/*.sh
 
 # Copy kickstart files to website
 #
-ADD ./site/kickstart /var/www/$MY_APACHE2_SITENAME
+###ADD ./site/kickstart /var/www/$MY_APACHE2_SITENAME
 
 # Set ownership of files or kickstart will not work properly
 #
-RUN chown -Rf $APACHE_RUN_USER:$APACHE_RUN_GROUP /var/www/$MY_APACHE2_SITENAME
+###RUN chown -Rf $APACHE_RUN_USER:$APACHE_RUN_GROUP /var/www/$MY_APACHE2_SITENAME
 
 # Copy archive copy scripts to home directory
 #
-ADD ./site/scripts/archive /root/archive
-RUN chmod -R +x /root/archive/*.sh
+###ADD ./site/scripts/archive /root/archive
+###RUN chmod -R +x /root/archive/*.sh
 
 # ======================================
 # END OF INSTALLING JOOMLA! RESTORE FILES
