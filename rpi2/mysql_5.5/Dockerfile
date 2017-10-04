@@ -1,5 +1,5 @@
 # Pull base image
-FROM resin/rpi-raspbian
+FROM pvln/rpi2-baseline:1.0
 
 MAINTAINER Pierre Veelen <pierre@pvln.nl>
 
