@@ -66,7 +66,7 @@ RUN chown -Rf $APACHE_RUN_USER:$APACHE_RUN_GROUP /var/www/${MY_APACHE2_SITENAME}
 
 # Update the default apache site with the config we created.
 #
-ADD ./configs/apache2-config.conf /etc/apache2/sites-enabled/000-default.conf
+ADD ./conf/apache2-config.conf /etc/apache2/sites-enabled/000-default.conf
 
 # Change folder to sitename -> change  var/www/site to var/www/$MY_APACHE2_SITENAME
 # sed -i "s/TextFrom/TextTo/" inWhichFile

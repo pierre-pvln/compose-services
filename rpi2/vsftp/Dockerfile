@@ -32,7 +32,7 @@ RUN sudo apt-get update &&  sudo apt-get install -y \
 
 # Update the default vsftp configuration file with this one.
 #
-ADD ./configs/vsftpd-config.conf /etc/vsftpd.conf
+ADD ./conf/vsftpd-config.conf /etc/vsftpd.conf
 	
 # Expose ftp on port 20 and 21
 #
