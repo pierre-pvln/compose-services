@@ -1,22 +1,8 @@
+# Import baseline image
+#
 FROM pvln/rpi2-baseline:1.0
 
 MAINTAINER Pierre Veelen <pierre@pvln.nl>
-
-# ==========================================
-# START OF INSTALLING UTILITIES AND DEFAULTS
-# ==========================================
-
-###RUN sudo apt-get update && sudo apt-get install -y \
-###    apt-utils \
-###    nano \
-###    ssh && \
-###	   sudo apt-get upgrade && \
-###    sudo apt-get clean && \ 
-###    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-	 
-# =============================
-# END OF UTILITIES AND DEFAULTS
-# =============================
 
 # ===========================
 # START OF INSTALLING APACHE2
@@ -110,80 +96,6 @@ RUN a2enmod php5
 # ======================
 # END OF INSTALLING PHP5
 # ======================
-
-# =========================
-# START OF INSTALLING MYSQL
-# =========================
-#
-# Inspiration: https://stackoverflow.com/questions/32145650/how-to-set-mysql-username-in-dockerfile/32146887#32146887
-#
-###ARG MY_MYSQL_SERVER_ROOT_PASSWORD='def-root'
-
-#DEBUG
-#=====
-# save info to file
-###RUN echo $MY_MYSQL_SERVER_ROOT_PASSWORD > /root/MY_MYSQL_SERVER_ROOT_PASSWORD.txt
-
-#RUN { \ echo mysql-server-5.5 mysql-server/root_password password $MY_MYSQL_SERVER_ROOT_PASSWORD; \
-#        echo mysql-server-5.5 mysql-server/root_password_again password $MY_MYSQL_SERVER_ROOT_PASSWORD; \
-#    } | sudo debconf-set-selections \
-#    && sudo apt-get update && sudo apt-get install -y \
-#        mysql-server && \
-#    sudo apt-get clean && \ 
-#    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-#  Install mysql-server and cleanup afterwards
-#
-###RUN { \
-###        echo mysql-server-5.5 mysql-server/root_password password 'root'; \
-###        echo mysql-server-5.5 mysql-server/root_password_again password 'root'; \
-###    } | sudo debconf-set-selections \
-###    && sudo apt-get update && sudo apt-get install -y \
-###        mysql-server && \
-###    sudo apt-get upgrade && \
-###	sudo apt-get clean && \ 
-###    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-#
-# TODO: include mysql_secure_installation in container 
-#
-#RUN sudo apt-get update && \
-#    sudo mysql_secure_installation && \
-#    sudo apt-get clean && \ 
-#    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-
-# Mountable datafolder path
-###VOLUME ["/var/lib/mysql"]
-	
-	
-#TEST
-#====
-# Copy MySQL test scripts to home directory
-#
-###ADD ./site/scripts/mysql /root/mysql
-###RUN chmod -R +x /root/mysql/*.sh
-
-# =======================
-# END OF INSTALLING MYSQL
-# =======================
-
-# ======================================
-# START OF INSTALLING JOOMLA! RESTORE FILES
-# ======================================
-
-# Copy kickstart files to website
-#
-###ADD ./site/kickstart /var/www/$MY_APACHE2_SITENAME
-
-# Set ownership of files or kickstart will not work properly
-#
-###RUN chown -Rf $APACHE_RUN_USER:$APACHE_RUN_GROUP /var/www/$MY_APACHE2_SITENAME
-
-# Copy archive copy scripts to home directory
-#
-###ADD ./site/scripts/archive /root/archive
-###RUN chmod -R +x /root/archive/*.sh
 
 # ======================================
 # END OF INSTALLING JOOMLA! RESTORE FILES
