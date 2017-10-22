@@ -12,8 +12,8 @@ MAINTAINER Pierre Veelen <pierre@pvln.nl>
 #
 
 # get variables from commandline and set default values
-ARG MY_APACHE2_SERVERNAME='def-server-name'
-ARG MY_APACHE2_SITENAME='def-site-name'
+#ARG MY_APACHE2_SERVERNAME='def-server-name'
+#ARG MY_APACHE2_SITENAME='def-site-name'
 
 # Install apache2 and cleanup afterwards
 #
@@ -38,9 +38,13 @@ ENV APACHE_RUN_USER=www-data \
 #
 EXPOSE 80
 
+#
+# Setup the sitename through an environment variable set in the build script
+# 
+ENV MY_APACHE2_SITENAME=${MY_APACHE2_SITENAME}
+
 # Mountable datafolder path
 VOLUME ["/var/www/${MY_APACHE2_SITENAME}"]
-
 
 # Copy this repo into place
 #
