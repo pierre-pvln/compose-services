@@ -1,1 +1,2 @@
-<? echo "<p>Hello; running index.php</p>"; ?>
+<? echo "<h1>Hello; running index.php</h1>"; ?>
+<? phpinfo(); ?>
