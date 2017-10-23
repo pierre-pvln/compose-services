@@ -17,12 +17,15 @@ MAINTAINER Pierre Veelen <pierre@pvln.nl>
 #ENV MY_SITENAME=${MY_APACHE2_SITENAME}
 ENV MY_WEBFOLDER=html
 
+#DBG
+RUN echo "MY_WEBFOLDER: $MY_WEBFOLDER" 
+
 # Install apache2 and cleanup afterwards
 #
 RUN sudo apt-get update && sudo apt-get install -y \
     apache2 && \
     sudo apt-get upgrade && \
-	sudo apt-get clean && \ 
+    sudo apt-get clean && \ 
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Enable apache mods.
@@ -35,21 +38,24 @@ ENV APACHE_RUN_USER=www-data \
     APACHE_LOG_DIR=/var/log/apache2 \
     APACHE_LOCK_DIR=/var/lock/apache2 \
     APACHE_PID_FILE=/var/run/apache2.pid \
-	APACHE_DOCUMENTROOT=/var/www/${MY_WEBFOLDER} \
-	APACHE_SERVERNAME=localhost \
-	APACHE_SERVERADMIN=pierre@pvln.nl \
-    APACHE_SERVERALIAS=wwww.localhost \
+    APACHE_DOCUMENTROOT=/var/www/${MY_WEBFOLDER} \
+    APACHE_SERVERNAME=localhost \
+    APACHE_SERVERADMIN=pierre@pvln.nl \
+    APACHE_SERVERALIAS=www.localhost 
+
+#DBG
+RUN echo "APACHE_DOCUMENTROOT: $APACHE_DOCUMENTROOT"
 	
 # Expose apache2 on port 80
 #
 EXPOSE 80
 
 # Mountable datafolder path
-VOLUME ["${APACHE_DOCUMENTROOT}"]
+VOLUME ["$APACHE_DOCUMENTROOT"]
 
 # Copy this repo into place
 #
-ADD ./site/default ${APACHE_DOCUMENTROOT}
+ADD ./files/default $APACHE_DOCUMENTROOT
 
 # set ownership of files
 #
@@ -64,7 +70,7 @@ ADD ./conf/apache2-config.conf /etc/apache2/sites-enabled/000-default.conf
 # \/ is used to escape the / in the file path
 #
 #RUN sed -i "s/var\/www\/site/var\/www\/${MY_APACHE2_SITENAME}/" /etc/apache2/sites-enabled/000-default.conf
-RUN sed -i "s/var\/www\/site/var\/www\/${APACHE_DOCUMENTROOT}/" /etc/apache2/sites-enabled/000-default.conf
+RUN sed -i "s/var\/www\/site/var\/www\/${MY_WEBFOLDER}/" /etc/apache2/sites-enabled/000-default.conf
 
 # TODO CHANGE WEBSITE SERVERNAME TO PREVENT WARNING
 
@@ -87,7 +93,7 @@ RUN sudo apt-get update &&  sudo apt-get install -y \
 	 php5-curl \
 	 php5-gd && \
     sudo apt-get upgrade && \
-	sudo apt-get clean && \ 
+    sudo apt-get clean && \ 
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #Update the PHP.ini file, enable <? ?> tags and quieten logging.
