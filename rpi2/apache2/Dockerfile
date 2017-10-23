@@ -41,14 +41,14 @@ EXPOSE 80
 #
 # Setup the sitename through an environment variable set in the build script
 # 
-ENV MY_APACHE2_SITENAME=${MY_APACHE2_SITENAME}
+#ENV MY_APACHE2_WEBFOLDER=${MY_APACHE2_SITENAME}
 
 # Mountable datafolder path
 VOLUME ["/var/www/${MY_APACHE2_SITENAME}"]
 
 # Copy this repo into place
 #
-ADD ./site/default /var/www/${MY_APACHE2_SITENAME}
+ADD ./files/default /var/www/${MY_APACHE2_SITENAME}
 
 # set ownership of files
 #
@@ -58,11 +58,12 @@ RUN chown -Rf $APACHE_RUN_USER:$APACHE_RUN_GROUP /var/www/${MY_APACHE2_SITENAME}
 #
 ADD ./conf/apache2-config.conf /etc/apache2/sites-enabled/000-default.conf
 
-# Change folder to sitename -> change  var/www/site to var/www/$MY_APACHE2_SITENAME
+# Change folder to sitename -> change  var/www/site to var/www/${MY_APACHE2_SITENAME}
 # sed -i "s/TextFrom/TextTo/" inWhichFile
 # \/ is used to escape the / in the file path
 #
 RUN sed -i "s/var\/www\/site/var\/www\/${MY_APACHE2_SITENAME}/" /etc/apache2/sites-enabled/000-default.conf
+#RUN sed -i "s/var\/www\/site/var\/www\/MY_APACHE2_WEBFOLDER/" /etc/apache2/sites-enabled/000-default.conf
 
 # TODO CHANGE WEBSITE SERVERNAME TO PREVENT WARNING
 
