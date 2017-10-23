@@ -9,16 +9,18 @@ MAINTAINER Pierre Veelen <pierre@pvln.nl>
 # ===========================
 #
 # Inspiration: https://writing.pupius.co.uk/apache-and-php-on-docker-44faef716150
+#              https://github.com/jacksoncage/apache-docker
 #
 
-# get variables from commandline and set default values
-#ARG MY_APACHE2_SERVERNAME='def-server-name'
-#ARG MY_APACHE2_SITENAME='def-site-name'
+# Setup the sitename through an environment variable set in the build script
+# 
+#ENV MY_SITENAME=${MY_APACHE2_SITENAME}
+ENV MY_SITENAME=html
 
 # Install apache2 and cleanup afterwards
 #
 RUN sudo apt-get update && sudo apt-get install -y \
-     apache2 && \
+    apache2 && \
     sudo apt-get upgrade && \
 	sudo apt-get clean && \ 
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -32,38 +34,37 @@ ENV APACHE_RUN_USER=www-data \
     APACHE_RUN_GROUP=www-data \
     APACHE_LOG_DIR=/var/log/apache2 \
     APACHE_LOCK_DIR=/var/lock/apache2 \
-    APACHE_PID_FILE=/var/run/apache2.pid 
-
+    APACHE_PID_FILE=/var/run/apache2.pid \
+	APACHE_DOCUMENTROOT=/var/www/${MY_SITENAME} \
+	APACHE_SERVERNAME=localhost \
+	APACHE_SERVERADMIN=pierre@pvln.nl \
+    APACHE_SERVERALIAS=apache2.localhost \
+	
 # Expose apache2 on port 80
 #
 EXPOSE 80
 
-#
-# Setup the sitename through an environment variable set in the build script
-# 
-#ENV MY_APACHE2_WEBFOLDER=${MY_APACHE2_SITENAME}
-
 # Mountable datafolder path
-VOLUME ["/var/www/${MY_APACHE2_SITENAME}"]
+VOLUME ["${APACHE_DOCUMENTROOT}"]
 
 # Copy this repo into place
 #
-ADD ./files/default /var/www/${MY_APACHE2_SITENAME}
+ADD ./site/default ${APACHE_DOCUMENTROOT}
 
 # set ownership of files
 #
-RUN chown -Rf $APACHE_RUN_USER:$APACHE_RUN_GROUP /var/www/${MY_APACHE2_SITENAME}
+RUN chown -Rf $APACHE_RUN_USER:$APACHE_RUN_GROUP ${APACHE_DOCUMENTROOT}
 
 # Update the default apache site with the config we created.
 #
 ADD ./conf/apache2-config.conf /etc/apache2/sites-enabled/000-default.conf
 
-# Change folder to sitename -> change  var/www/site to var/www/${MY_APACHE2_SITENAME}
+# Change folder to sitename -> change  var/www/site to ${APACHE_DOCUMENTROOT}
 # sed -i "s/TextFrom/TextTo/" inWhichFile
 # \/ is used to escape the / in the file path
 #
-RUN sed -i "s/var\/www\/site/var\/www\/${MY_APACHE2_SITENAME}/" /etc/apache2/sites-enabled/000-default.conf
-#RUN sed -i "s/var\/www\/site/var\/www\/MY_APACHE2_WEBFOLDER/" /etc/apache2/sites-enabled/000-default.conf
+#RUN sed -i "s/var\/www\/site/var\/www\/${MY_APACHE2_SITENAME}/" /etc/apache2/sites-enabled/000-default.conf
+RUN sed -i "s/var\/www\/site/var\/www\/${APACHE_DOCUMENTROOT}/" /etc/apache2/sites-enabled/000-default.conf
 
 # TODO CHANGE WEBSITE SERVERNAME TO PREVENT WARNING
 
@@ -101,10 +102,6 @@ RUN a2enmod php5
 # ======================
 # END OF INSTALLING PHP5
 # ======================
-
-# ======================================
-# END OF INSTALLING JOOMLA! RESTORE FILES
-# ======================================
 
 #
 # ENTRYPOINT & CMD
