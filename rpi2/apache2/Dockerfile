@@ -15,7 +15,7 @@ MAINTAINER Pierre Veelen <pierre@pvln.nl>
 # Setup the sitename through an environment variable set in the build script
 # 
 #ENV MY_SITENAME=${MY_APACHE2_SITENAME}
-ENV MY_SITENAME=html
+ENV MY_WEBFOLDER=html
 
 # Install apache2 and cleanup afterwards
 #
@@ -35,10 +35,10 @@ ENV APACHE_RUN_USER=www-data \
     APACHE_LOG_DIR=/var/log/apache2 \
     APACHE_LOCK_DIR=/var/lock/apache2 \
     APACHE_PID_FILE=/var/run/apache2.pid \
-	APACHE_DOCUMENTROOT=/var/www/${MY_SITENAME} \
+	APACHE_DOCUMENTROOT=/var/www/${MY_WEBFOLDER} \
 	APACHE_SERVERNAME=localhost \
 	APACHE_SERVERADMIN=pierre@pvln.nl \
-    APACHE_SERVERALIAS=apache2.localhost \
+    APACHE_SERVERALIAS=wwww.localhost \
 	
 # Expose apache2 on port 80
 #
