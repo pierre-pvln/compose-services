@@ -6,4 +6,4 @@ Structure:
     - service-name_version
         - Dockerfile
         - README.md
-        - site 
+        - files 
