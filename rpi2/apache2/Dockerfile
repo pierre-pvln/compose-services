@@ -1,6 +1,6 @@
 # Import baseline image
 #
-FROM pvln/rpi2-baseline:1.0
+FROM pvln/$MY_PLATFORM-baseline:1.0
 
 MAINTAINER Pierre Veelen <pierre@pvln.nl>
 
@@ -15,6 +15,10 @@ MAINTAINER Pierre Veelen <pierre@pvln.nl>
 # Setup the sitename through an environment variable set in the build script
 # 
 #ENV MY_SITENAME=${MY_APACHE2_SITENAME}
+
+#DBG
+RUN echo "MY_WEBFOLDER: $MY_WEBFOLDER" 
+
 ENV MY_WEBFOLDER=html
 
 #DBG
