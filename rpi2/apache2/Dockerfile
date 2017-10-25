@@ -1,6 +1,6 @@
 # Import baseline image
 #
-FROM pvln/$MY_PLATFORM-baseline:1.0
+FROM pvln/${MY_PLATFORM}-baseline:1.0
 
 MAINTAINER Pierre Veelen <pierre@pvln.nl>
 
