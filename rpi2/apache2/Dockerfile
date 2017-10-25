@@ -1,6 +1,6 @@
 # Import baseline image
 #
-FROM pvln/$MY_PLATFORM-baseline:1.0
+FROM pvln/rpi2-baseline:1.0
 
 MAINTAINER Pierre Veelen <pierre@pvln.nl>
 
@@ -12,17 +12,30 @@ MAINTAINER Pierre Veelen <pierre@pvln.nl>
 #              https://github.com/jacksoncage/apache-docker
 #
 
+
+#DBG
+#RUN echo "MY_PLATFORM: ${MY_PLATFORM}" 
+
+#DBG
+#RUN printenv
+
 # Setup the sitename through an environment variable set in the build script
 # 
 #ENV MY_SITENAME=${MY_APACHE2_SITENAME}
 
 #DBG
-RUN echo "MY_WEBFOLDER: $MY_WEBFOLDER" 
-
-ENV MY_WEBFOLDER=html
+#RUN echo "MY_APACHE2_WEBFOLDER: ${MY_APACHE2_WEBFOLDER}" 
 
 #DBG
-RUN echo "MY_WEBFOLDER: $MY_WEBFOLDER" 
+#RUN echo "MY_WEBFOLDER: ${MY_WEBFOLDER}" 
+
+#ENV MY_WEBFOLDER=html
+
+#DBG
+#RUN echo "MY_WEBFOLDER: $MY_WEBFOLDER" 
+
+#DBG
+#RUN printenv
 
 # Install apache2 and cleanup afterwards
 #
@@ -35,35 +48,42 @@ RUN sudo apt-get update && sudo apt-get install -y \
 # Enable apache mods.
 RUN a2enmod rewrite
 
-# Set up the apache environment variables
+# Set up the minimum default apache environment variables
 #
 ENV APACHE_RUN_USER=www-data \
     APACHE_RUN_GROUP=www-data \
     APACHE_LOG_DIR=/var/log/apache2 \
     APACHE_LOCK_DIR=/var/lock/apache2 \
-    APACHE_PID_FILE=/var/run/apache2.pid \
-    APACHE_DOCUMENTROOT=/var/www/${MY_WEBFOLDER} \
+    APACHE_PID_FILE=/var/run/apache2.pid
+
+# Set up the additional apache environment variables
+#
+ENV APACHE_WEB_FOLDER=html \
+    APACHE_DOCUMENTROOT=/var/www/${APACHE_WEBFOLDER} \
     APACHE_SERVERNAME=localhost \
     APACHE_SERVERADMIN=pierre@pvln.nl \
     APACHE_SERVERALIAS=www.localhost 
 
 #DBG
-RUN echo "APACHE_DOCUMENTROOT: $APACHE_DOCUMENTROOT"
+#RUN echo "APACHE_DOCUMENTROOT: $APACHE_DOCUMENTROOT"
 	
-# Expose apache2 on port 80
+#DBG
+#RUN printenv
+
+# Expose apache2 on port 80 of the container
 #
 EXPOSE 80
 
-# Mountable datafolder path
-VOLUME ["$APACHE_DOCUMENTROOT"]
+# Mountable datafolder path(s)
+VOLUME ["${APACHE_DOCUMENTROOT}"]
 
 # Copy this repo into place
 #
-ADD ./files/default $APACHE_DOCUMENTROOT
+ADD ./files/default ${APACHE_DOCUMENTROOT}
 
 # set ownership of files
 #
-RUN chown -Rf $APACHE_RUN_USER:$APACHE_RUN_GROUP ${APACHE_DOCUMENTROOT}
+RUN chown -Rf ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} ${APACHE_DOCUMENTROOT}
 
 # Update the default apache site with the config we created.
 #
@@ -74,7 +94,7 @@ ADD ./conf/apache2-config.conf /etc/apache2/sites-enabled/000-default.conf
 # \/ is used to escape the / in the file path
 #
 #RUN sed -i "s/var\/www\/site/var\/www\/${MY_APACHE2_SITENAME}/" /etc/apache2/sites-enabled/000-default.conf
-RUN sed -i "s/var\/www\/site/var\/www\/${MY_WEBFOLDER}/" /etc/apache2/sites-enabled/000-default.conf
+RUN sed -i "s/var\/www\/site/var\/www\/${APACHE_WEBFOLDER}/" /etc/apache2/sites-enabled/000-default.conf
 
 # TODO CHANGE WEBSITE SERVERNAME TO PREVENT WARNING
 
