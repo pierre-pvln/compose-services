@@ -12,31 +12,6 @@ MAINTAINER Pierre Veelen <pierre@pvln.nl>
 #              https://github.com/jacksoncage/apache-docker
 #
 
-
-#DBG
-#RUN echo "MY_PLATFORM: ${MY_PLATFORM}" 
-
-#DBG
-#RUN printenv
-
-# Setup the sitename through an environment variable set in the build script
-# 
-#ENV MY_SITENAME=${MY_APACHE2_SITENAME}
-
-#DBG
-#RUN echo "MY_APACHE2_WEBFOLDER: ${MY_APACHE2_WEBFOLDER}" 
-
-#DBG
-#RUN echo "MY_WEBFOLDER: ${MY_WEBFOLDER}" 
-
-#ENV MY_WEBFOLDER=html
-
-#DBG
-#RUN echo "MY_WEBFOLDER: $MY_WEBFOLDER" 
-
-#DBG
-#RUN printenv
-
 # Install apache2 and cleanup afterwards
 #
 RUN sudo apt-get update && sudo apt-get install -y \
@@ -58,43 +33,34 @@ ENV APACHE_RUN_USER=www-data \
 
 # Set up the additional apache environment variables
 #
-ENV APACHE_WEB_FOLDER=html \
-    APACHE_DOCUMENTROOT=/var/www/${APACHE_WEBFOLDER} \
-    APACHE_SERVERNAME=localhost \
-    APACHE_SERVERADMIN=pierre@pvln.nl \
+ENV APACHE_SERVERNAME=localhost \
     APACHE_SERVERALIAS=www.localhost 
-
-#DBG
-#RUN echo "APACHE_DOCUMENTROOT: $APACHE_DOCUMENTROOT"
-	
-#DBG
-#RUN printenv
-
+    APACHE_SERVERADMIN=pierre@pvln.nl \
+    
 # Expose apache2 on port 80 of the container
 #
 EXPOSE 80
 
 # Mountable datafolder path(s)
-VOLUME ["${APACHE_DOCUMENTROOT}"]
+VOLUME ["/var/www/html"]
 
 # Copy this repo into place
 #
-ADD ./files/default ${APACHE_DOCUMENTROOT}
+ADD ./files/default /var/www/html
 
 # set ownership of files
 #
-RUN chown -Rf ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} ${APACHE_DOCUMENTROOT}
+RUN chown -Rf ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
 
 # Update the default apache site with the config we created.
 #
 ADD ./conf/apache2-config.conf /etc/apache2/sites-enabled/000-default.conf
 
-# Change folder to sitename -> change  var/www/site to ${APACHE_DOCUMENTROOT}
+# Change folder to sitename -> change  var/www/site to var/www/html
 # sed -i "s/TextFrom/TextTo/" inWhichFile
 # \/ is used to escape the / in the file path
 #
-#RUN sed -i "s/var\/www\/site/var\/www\/${MY_APACHE2_SITENAME}/" /etc/apache2/sites-enabled/000-default.conf
-RUN sed -i "s/var\/www\/site/var\/www\/${APACHE_WEBFOLDER}/" /etc/apache2/sites-enabled/000-default.conf
+RUN sed -i "s/var\/www\/site/var\/www\/html/" /etc/apache2/sites-enabled/000-default.conf
 
 # TODO CHANGE WEBSITE SERVERNAME TO PREVENT WARNING
 
