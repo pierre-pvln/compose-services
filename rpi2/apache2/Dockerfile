@@ -34,8 +34,8 @@ ENV APACHE_RUN_USER=www-data \
 # Set up the additional apache environment variables
 #
 ENV APACHE_SERVERNAME=localhost \
-    APACHE_SERVERALIAS=www.localhost 
-    APACHE_SERVERADMIN=pierre@pvln.nl \
+    APACHE_SERVERALIAS=www.localhost \
+    APACHE_SERVERADMIN=pierre@pvln.nl 
     
 # Expose apache2 on port 80 of the container
 #
