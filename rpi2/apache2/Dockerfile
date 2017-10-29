@@ -43,10 +43,11 @@ ENV APACHE_SERVERNAME=localhost \
 #
 EXPOSE 80
 
-# Mountable datafolder path(s)
+# Mountable datafolder path(s) within the container
 VOLUME ["/var/www/html"]
 
 # Copy this repo into place
+# files/folder at host , files/folders in container
 #
 ADD ./files/default /var/www/html
 
