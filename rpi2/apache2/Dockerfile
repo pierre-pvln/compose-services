@@ -51,10 +51,6 @@ VOLUME ["/var/www/html"]
 #
 ADD ./files/default /var/www/html
 
-# set ownership of files
-#
-RUN chown -Rf ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
-
 # Update the default apache site with the config we created.
 #
 ADD ./conf/apache2-config.conf /etc/apache2/sites-enabled/000-default.conf
@@ -64,6 +60,10 @@ ADD ./conf/apache2-config.conf /etc/apache2/sites-enabled/000-default.conf
 # \/ is used to escape the / in the file path
 #
 RUN sed -i "s/var\/www\/site/var\/www\/html/" /etc/apache2/sites-enabled/000-default.conf
+
+# set ownership of files
+#
+RUN chown -Rf ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
 
 # TODO CHANGE WEBSITE SERVERNAME TO PREVENT WARNING
 
