@@ -45,7 +45,7 @@ EXPOSE 80
 
 # Mountable datafolder path(s) within the container
 #
-VOLUME /var/www/html
+VOLUME ["/var/www/html"]
 
 # Copy this repo into place
 # files/folder at host , files/folders in container
@@ -70,16 +70,42 @@ ADD ./conf/apache2-config.conf /etc/apache2/sites-enabled/000-default.conf
 #
 RUN sed -i "s/var\/www\/site/var\/www\/html/" /etc/apache2/sites-enabled/000-default.conf
 
-# 
-#
-#
 # TODO CHANGE WEBSITE SERVERNAME TO PREVENT WARNING
-#
-#
 
 # =========================
 # END OF INSTALLING APACHE2
 # =========================
+
+# ========================
+# START OF INSTALLING PHP5
+# ========================
+
+# Install php5 and cleanup afterwards
+#
+RUN sudo apt-get update &&  sudo apt-get install -y \
+	 libapache2-mod-php5 \
+	 php5 \ 
+	 php-pear \
+	 php5-xcache \
+	 php5-mysql \
+	 php5-curl \
+	 php5-gd && \
+    sudo apt-get upgrade && \
+    sudo apt-get clean && \ 
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+#Update the PHP.ini file, enable <? ?> tags and quieten logging.
+#
+RUN sed -i "s/short_open_tag = Off/short_open_tag = On/" /etc/php5/apache2/php.ini
+RUN sed -i "s/error_reporting = .*$/error_reporting = E_ERROR | E_WARNING | E_PARSE/" /etc/php5/apache2/php.ini
+
+# Enable apache mods for PHP.
+#
+RUN a2enmod php5
+
+# ======================
+# END OF INSTALLING PHP5
+# ======================
 
 #
 # ENTRYPOINT & CMD
