@@ -2,6 +2,8 @@ FROM resin/rpi-raspbian
 
 MAINTAINER Pierre Veelen <pierre@pvln.nl>
 
+LABEL version="1.0" maintainer="Pierre Veelen <pierre@pvln.nl>"
+
 # ==========================================
 # START OF INSTALLING UTILITIES AND DEFAULTS
 # ==========================================
