@@ -1,6 +1,6 @@
 # Import baseline image
 #
-FROM pvln/rpi2-apache2:1.0
+FROM pvln/rpi3-apache2:1.0
 
 MAINTAINER Pierre Veelen <pierre@pvln.nl>
 

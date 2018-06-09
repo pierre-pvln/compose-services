@@ -1,7 +1,9 @@
 # Pull base image
-FROM pvln/rpi2-baseline:1.0
+FROM pvln/rpi3-baseline:1.0
 
 MAINTAINER Pierre Veelen <pierre@pvln.nl>
+
+LABEL version="1.0" maintainer="Pierre Veelen <pierre@pvln.nl>"
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 # https://manpages.debian.org/jessie/passwd/groupadd.8.en.html
