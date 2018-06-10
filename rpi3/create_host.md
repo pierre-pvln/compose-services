@@ -20,7 +20,7 @@ Now reboot the raspberry pi 3
 
 Get the latest versions:
 - Open terminal and:
-'''script
+```script
 sudo apt-get update
 sudo apt-get -y upgrade
 ```
