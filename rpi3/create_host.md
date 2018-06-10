@@ -9,7 +9,7 @@ raspberry will boot to graphical user interface.
 
 - in menu -> Preferences -> Raspberry Pi Configuration -> System
   - change hostname to : raspberrypi3
-  - change password to : PVee#RPI3
+  - change password to : <_a_new_password_>
 - in menu -> Preferences -> Raspberry Pi Configuration -> Interfaces
   - change SSH to yes
 - in menu -> Preferences -> Raspberry Pi Configuration -> Localisation
