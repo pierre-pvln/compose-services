@@ -1,9 +1,10 @@
+Installing the image
 - Download image raspberry pi 3 debian image
 - Put it on SD card using Ether (from etcher.io)
 - Make shore that terminal, keyboard en netwerkcable is connected
 - Insert SD card in raspberry pi3 and power up.
 
-raspberry will boot to graphical user interface.
+Raspberry will boot to graphical user interface.
 - in menu -> Preferences -> Mouse and Keyboard settings
   - change/check keyboard settings shift-3 to get #
 
@@ -23,4 +24,8 @@ Get the latest versions:
 ```script
 sudo apt-get update
 sudo apt-get -y upgrade
+```
+Then reboot the raspberry pi 3
+```script
+sudo reboot now
 ```
