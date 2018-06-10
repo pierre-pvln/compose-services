@@ -1,4 +1,4 @@
-- Download image
+- Download image raspberry pi 3 debian image
 - Put it on SD card using Ether (from etcher.io)
 - Make shore that terminal, keyboard en netwerkcable is connected
 - Insert SD card in raspberry pi3 and power up.
@@ -18,3 +18,9 @@ raspberry will boot to graphical user interface.
 
 Now reboot the raspberry pi 3
 
+Get the latest versions:
+- Open terminal and:
+'''script
+sudo apt-get update
+sudo apt-get -y upgrade
+```
