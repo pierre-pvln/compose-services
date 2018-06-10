@@ -29,3 +29,10 @@ Then reboot the raspberry pi 3
 ```script
 sudo reboot now
 ```
+
+In a terminal
+```script
+cd ~
+curl -O -L https://raw.githubusercontent.com/pierre-pvln/compose-on_host/master/prepare_docker_host.sh
+chmod +x *.sh
+```
