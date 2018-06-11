@@ -1,3 +1,5 @@
+# Steps to create a raspberry pi 3 to use as a docker host
+
 Installing the image
 - Download image raspberry pi 3 debian image
 - Put it on SD card using Ether (from etcher.io)
@@ -33,6 +35,8 @@ sudo reboot now
 In a terminal
 ```script
 cd ~
+mkdir myDocker
+cd myDocker
 curl -O -L https://raw.githubusercontent.com/pierre-pvln/compose-on_host/master/prepare_docker_host.sh
 chmod +x *.sh
 ./prepare_docker_host.sh
