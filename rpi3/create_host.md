@@ -2,8 +2,8 @@
 
 Installing the image
 - Download image raspberry pi 3 debian image
-- Put it on SD card using Ether (from etcher.io)
-- Make shore that terminal, keyboard en netwerkcable is connected
+- Put it on SD card using Etcher (from etcher.io)
+- Make shore that terminal, keyboard en netwerkcable are connected to raspberry
 - Insert SD card in raspberry pi3 and power up.
 
 Raspberry will boot to graphical user interface.
@@ -32,7 +32,7 @@ Then reboot the raspberry pi 3
 sudo reboot now
 ```
 
-In a terminal
+Get the preparation script and run it
 ```script
 cd ~
 mkdir myDocker
@@ -42,5 +42,5 @@ chmod +x *.sh
 ./prepare_docker_host.sh
 ```
 
-Now you should have the required structure and files
+Now you should have the required structure and files, but docker is not installed yet.
 
