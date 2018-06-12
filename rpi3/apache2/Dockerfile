@@ -16,6 +16,8 @@ LABEL version="1.0" maintainer="Pierre Veelen <pierre@pvln.nl>"
 
 # Install apache2 and cleanup afterwards
 #
+
+# Important to update the packages list befor installing since they are removed after the install
 RUN sudo apt-get update && sudo apt-get install -y \
     apache2 && \
     sudo apt-get upgrade && \
@@ -39,18 +41,22 @@ ENV APACHE_SERVERNAME=localhost \
 # Enable apache mods.
 RUN a2enmod rewrite
 
+
 #DBG
 #
-RUN ls -la /var/www/
+#RUN ls -laR /var/www/
 
 # Copy this repo into place
 # files/folder at host , files/folders in container
 #
-ADD ./files/default /var/www/html
+# DOES NOT WORK WHY I DON'T KNOW
+# ADDING FILES ON A VOLUME WORKS WHEN COPIED FROM DOCKER HOST TO THAT VOLUME
+#
+# ADD ./files/default /var/www/html
 
 #DBG
 #
-RUN ls -la /var/www/html
+#RUN ls -laR /var/www/html
 
 # Update the default apache site with the config we created.
 #
@@ -58,7 +64,7 @@ ADD ./conf/apache2-config.conf /etc/apache2/sites-enabled/000-default.conf
 
 #DBG
 #
-RUN cat /etc/apache2/sites-enabled/000-default.conf
+#RUN cat /etc/apache2/sites-enabled/000-default.conf
 
 # Change folder to sitename -> change  var/www/site to var/www/html
 # sed -i "s/TextFrom/TextTo/" inWhichFile
