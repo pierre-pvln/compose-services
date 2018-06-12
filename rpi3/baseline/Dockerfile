@@ -11,7 +11,8 @@ LABEL version="1.0" maintainer="Pierre Veelen <pierre@pvln.nl>"
 RUN sudo apt-get update && sudo apt-get install -y \
     apt-utils \
     nano \
-    ssh && \
+    ssh \
+	net-tools && \
     sudo apt-get upgrade && \
     sudo apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

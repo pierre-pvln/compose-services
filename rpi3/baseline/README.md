@@ -4,6 +4,7 @@ This Docker files creates the baseline image with standard utilities:
 - apt
 - ssh
 - nano
+- net-tools
 
 ![overview](./media/overview.png)
 
