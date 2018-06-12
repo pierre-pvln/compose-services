@@ -12,10 +12,10 @@ RUN sudo apt-get update && sudo apt-get install -y \
     apt-utils \
     nano \
     ssh && \
-	sudo apt-get upgrade && \
-    sudo apt-get clean && \ 
+    sudo apt-get upgrade && \
+    sudo apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-	 
+
 # =============================
 # END OF UTILITIES AND DEFAULTS
 # =============================
