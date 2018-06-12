@@ -1,6 +1,6 @@
 # Import baseline image
 #
-FROM pvln/rpi3-baseline:1.0
+FROM pvln/rpi3-lvl1-baseline:1.0
 
 MAINTAINER Pierre Veelen <pierre@pvln.nl>
 
