@@ -39,13 +39,9 @@ ENV APACHE_SERVERNAME=localhost \
 # Enable apache mods.
 RUN a2enmod rewrite
 
-# Expose apache2 on port 80 of the container
+#DBG
 #
-EXPOSE 80
-
-# Mountable datafolder path(s) within the container
-#
-VOLUME /var/www/html
+RUN ls -la /var/www/
 
 # Copy this repo into place
 # files/folder at host , files/folders in container
@@ -59,6 +55,10 @@ RUN ls -la /var/www/html
 # Update the default apache site with the config we created.
 #
 ADD ./conf/apache2-config.conf /etc/apache2/sites-enabled/000-default.conf
+
+#DBG
+#
+RUN cat /etc/apache2/sites-enabled/000-default.conf
 
 # Change folder to sitename -> change  var/www/site to var/www/html
 # sed -i "s/TextFrom/TextTo/" inWhichFile
@@ -76,6 +76,19 @@ RUN chown -Rf ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
 # TODO CHANGE WEBSITE SERVERNAME TO PREVENT WARNING
 #
 # =========================
+
+
+# Expose apache2 on port 80 of the container
+#
+EXPOSE 80
+
+# Mountable datafolder path(s) within the container
+#
+# A key point to be aware of here is that anything after the VOLUME instruction
+# in a Dockerfile will not be able to make changes to that volume
+#
+VOLUME /var/www/html
+VOLUME /var/log/apache2
 
 # =========================
 # END OF INSTALLING APACHE2
