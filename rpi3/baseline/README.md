@@ -5,5 +5,5 @@ This Docker files creates the baseline image with standard utilities:
 - ssh
 - nano
 
-![overview](/media/overview.png)
+![overview](./media/overview.png)
 
