@@ -14,14 +14,14 @@ LABEL version="1.0" maintainer="Pierre Veelen <pierre@pvln.nl>"
 #
 RUN sudo apt-get update &&  sudo apt-get install -y \
 	 libapache2-mod-php5 \
-	 php5 \ 
+	 php5 \
 	 php-pear \
 	 php5-xcache \
 	 php5-mysql \
 	 php5-curl \
 	 php5-gd && \
     sudo apt-get upgrade && \
-    sudo apt-get clean && \ 
+    sudo apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #Update the PHP.ini file, enable <? ?> tags and quieten logging.
