@@ -5,6 +5,7 @@ This Docker files creates the baseline image with standard utilities:
 - ssh
 - nano
 - net-tools
+- locale
 
 ![overview](./media/overview.png)
 
