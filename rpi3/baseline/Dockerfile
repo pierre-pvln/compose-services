@@ -28,6 +28,9 @@ RUN sudo apt-get update && \
 # ==========================================
 # CONFIGURE TIMEZONE AND LOCALE
 # ==========================================
+#
+# Inspiration: https://github.com/jacksoncage/apache-docker
+#
 
 RUN echo "Europe/Amsterdam" > /etc/timezone && \
     dpkg-reconfigure -f noninteractive tzdata
