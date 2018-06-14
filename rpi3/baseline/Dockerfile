@@ -50,4 +50,9 @@ RUN export LANGUAGE=en_US.UTF-8 && \
 #
 ENTRYPOINT []
 
-CMD /bin/bash
+# Add our own entrypoint scriptn.
+#
+ADD ./entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["/bin/bash","entrypoint.sh"]
+
+#CMD /bin/bash
