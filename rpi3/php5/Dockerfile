@@ -1,3 +1,9 @@
+# ==========================================
+# Raspberry Pi 3 PHP5 Dockerfile
+# ==========================================
+
+# Import baseline image
+#
 # Import baseline image
 #
 FROM pvln/rpi3-lvl1-baseline:1.0
