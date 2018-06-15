@@ -1,4 +1,9 @@
-# Pull base image
+# ==========================================
+# Raspberry Pi 3 Mysql 5.5 Dockerfile
+# ==========================================
+
+# Import baseline image
+#
 FROM pvln/rpi3-lvl1-php5:1.0
 
 MAINTAINER Pierre Veelen <pierre@pvln.nl>
