@@ -1,3 +1,7 @@
+# ==========================================
+# Raspberry Pi 3 Apache2 Dockerfile
+# ==========================================
+
 # Import baseline image
 #
 FROM pvln/rpi3-lvl1-baseline:1.0
@@ -40,7 +44,6 @@ ENV APACHE_SERVERNAME=localhost \
 
 # Enable apache mods.
 RUN a2enmod rewrite
-
 
 #DBG
 #
