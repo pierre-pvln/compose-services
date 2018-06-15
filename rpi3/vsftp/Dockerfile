@@ -1,3 +1,9 @@
+# ==========================================
+# Raspberry Pi 3 VSFTP Dockerfile
+# ==========================================
+
+# Import baseline image
+#
 FROM pvln/rpi3-baseline:1.0
 
 MAINTAINER Pierre Veelen <pierre@pvln.nl>
