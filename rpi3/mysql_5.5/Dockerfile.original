@@ -1,3 +1,9 @@
+# ==========================================
+# Raspberry Pi 3 Baseline Dockerfile
+# ==========================================
+
+# Import baseline image
+#
 FROM resin/rpi-raspbian
 
 MAINTAINER Pierre Veelen <pierre@pvln.nl>
