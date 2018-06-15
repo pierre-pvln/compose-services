@@ -1,3 +1,9 @@
+# ==========================================
+# Raspberry Pi 3 Voluntas Dockerfile
+# ==========================================
+
+# Import baseline image
+#
 FROM pvln/rpi3-lvl1-mysql:1.0
 
 MAINTAINER Pierre Veelen <pierre@pvln.nl>
