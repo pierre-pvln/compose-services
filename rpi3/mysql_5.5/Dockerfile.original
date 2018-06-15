@@ -1,5 +1,5 @@
 # ==========================================
-# Raspberry Pi 3 Baseline Dockerfile
+# Raspberry Pi 3 Mysql 5.5 Dockerfile
 # ==========================================
 
 # Import baseline image
