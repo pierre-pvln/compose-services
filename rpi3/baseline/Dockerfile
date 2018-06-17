@@ -20,26 +20,20 @@ RUN sudo apt-get update && \
     apt-utils \
     nano \
     ssh \
-    net-tools \
-    locale && \
+    net-tools && \
     sudo apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # ==========================================
-# CONFIGURE TIMEZONE AND LOCALE
+# CONFIGURE TIMEZONE AND LOCALTIME
 # ==========================================
 #
-# Inspiration: https://github.com/jacksoncage/apache-docker
+# Inspiration: https://www.raspberrypi.org/forums/viewtopic.php?t=4977
 #
-
-RUN echo "Europe/Amsterdam" > /etc/timezone && \
-    dpkg-reconfigure -f noninteractive tzdata
-
-RUN export LANGUAGE=en_US.UTF-8 && \
-    export LANG=en_US.UTF-8 && \
-    export LC_ALL=en_US.UTF-8 && \
-    locale-gen en_US.UTF-8 && \
-    DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
+RUN sudo rm /etc/localtime && \
+    sudo ln -s /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime && \
+    sudo rm /etc/timezone && \
+    echo "Europe/Amsterdam" | sudo tee /etc/timezone 
 
 # ==========================================
 # END OF UTILITIES AND DEFAULTS
