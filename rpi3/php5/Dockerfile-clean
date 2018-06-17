@@ -4,7 +4,7 @@
 
 #
 # Cleaned Dockerfile
-# Optimized to only apt-date and clean only once
+# Optimized to only apt-update and clean only once
 #
 
 # Import baseline image
@@ -23,7 +23,7 @@ LABEL version="1.0" maintainer="Pierre Veelen <pierre@pvln.nl>"
 #              https://github.com/jacksoncage/apache-docker
 #
 
-# Install apache2 and cleanup afterwards
+# Install apache2
 #
 
 # Important to update the packages list befor installing since they are removed after the install
