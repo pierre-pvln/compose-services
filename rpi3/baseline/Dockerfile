@@ -15,7 +15,7 @@ LABEL version="1.0" maintainer="Pierre Veelen <pierre@pvln.nl>"
 # ==========================================
 
 RUN sudo apt-get update && \
-    sudo apg-get upgrade -y && \
+    sudo apt-get upgrade -y && \
     sudo apt-get install -y \
     apt-utils \
     nano \
