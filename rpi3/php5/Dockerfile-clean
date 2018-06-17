@@ -70,19 +70,6 @@ RUN chown -Rf ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
 #
 # =========================
 
-
-# Expose apache2 on port 80 of the container
-#
-EXPOSE 80
-
-# Mountable datafolder path(s) within the container
-#
-# A key point to be aware of here is that anything after the VOLUME instruction
-# in a Dockerfile will not be able to make changes to that volume
-#
-VOLUME /var/www/html
-VOLUME /var/log/apache2
-
 # =========================
 # END OF INSTALLING APACHE2
 # =========================
@@ -116,6 +103,28 @@ RUN a2enmod php5
 # ======================
 # END OF INSTALLING PHP5
 # ======================
+
+
+# ======================
+# START OF PORTS AND VOLUMES
+# ======================
+
+# Expose apache2 on port 80 of the container
+#
+EXPOSE 80
+
+# Mountable datafolder path(s) within the container
+#
+# A key point to be aware of here is that anything after the VOLUME instruction
+# in a Dockerfile will not be able to make changes to that volume
+#
+VOLUME /var/www/html
+VOLUME /var/log/apache2
+
+# ======================
+# END OF PORTS AND VOLUMES
+# ======================
+
 
 #
 # ENTRYPOINT & CMD
