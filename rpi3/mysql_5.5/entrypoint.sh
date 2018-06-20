@@ -55,4 +55,11 @@ if [ "$1" = 'mysqld' ]; then
 	chown -R mysql:mysql "$DATADIR"
 fi
 
+# Start apache 2 server
+#
+#
+/usr/sbin/apachectl -k start
+#
+#
+#
 exec "$@"

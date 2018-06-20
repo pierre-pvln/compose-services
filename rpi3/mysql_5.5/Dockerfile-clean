@@ -15,9 +15,9 @@ MAINTAINER Pierre Veelen <pierre@pvln.nl>
 
 LABEL version="1.0" maintainer="Pierre Veelen <pierre@pvln.nl>"
 
-# ===========================
+# ==========================================
 # START OF INSTALLING APACHE2
-# ===========================
+# ==========================================
 #
 # Inspiration: https://writing.pupius.co.uk/apache-and-php-on-docker-44faef716150
 #              https://github.com/jacksoncage/apache-docker
@@ -63,20 +63,20 @@ RUN sed -i "s/var\/www\/site/var\/www\/html/" /etc/apache2/sites-enabled/000-def
 #
 RUN chown -Rf ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
 
-# ========================= 
+# ========================================== 
 #
 #
 # TODO CHANGE WEBSITE SERVERNAME TO PREVENT WARNING
 #
-# =========================
+# ==========================================
 
-# =========================
+# ==========================================
 # END OF INSTALLING APACHE2
-# =========================
+# ==========================================
 
-# ========================
+# ==========================================
 # START OF INSTALLING PHP5
-# ========================
+# ==========================================
 
 # Install php5 and cleanup afterwards
 #
@@ -100,13 +100,13 @@ RUN sed -i "s/error_reporting = .*$/error_reporting = E_ERROR | E_WARNING | E_PA
 #
 RUN a2enmod php5
 
-# ======================
+# ==========================================
 # END OF INSTALLING PHP5
-# ======================
+# ==========================================
 
-# ========================
+# ==========================================
 # START OF INSTALLING MYSQL
-# ========================
+# ==========================================
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 # https://manpages.debian.org/jessie/passwd/groupadd.8.en.html
@@ -138,13 +138,13 @@ RUN { \
 # comment out a few problematic configuration values
 RUN sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/my.cnf
 
-# ======================
+# ==========================================
 # END OF INSTALLING MYSQL
-# ======================
+# ==========================================
 
-# ======================
+# ==========================================
 # START OF PORTS AND VOLUMES
-# ======================
+# ==========================================
 
 # Expose apache2 on port 80 of the container
 #
@@ -164,15 +164,25 @@ VOLUME /var/log/apache2
 
 VOLUME /var/lib/mysql
 
-# ======================
+# ==========================================
 # END OF PORTS AND VOLUMES
-# ======================
+# ==========================================
+
+# ==========================================
+# ENTRYPOINT & CMD
+# ==========================================
 
 #
-# ENTRYPOINT & CMD
-# ======
+# Inspiration: http://goinbigdata.com/docker-run-vs-cmd-vs-entrypoint/
+#
+# Prefer ENTRYPOINT to CMD when building executable Docker image and you need a command always to be executed. 
+# Additionally use CMD if you need to provide extra default arguments that could be overwritten from command line when docker container runs.
+# Choose CMD if you need to provide a default command and/or arguments that can be overwritten from command line when docker container runs.
+#
+
 # Cancel pre-defined start-up instruction and allow us to use our own.
-#ENTRYPOINT []
+#
+ENTRYPOINT []
 
 ###ADD ./entrypoint.sh /usr/local/bin/
 ###ENTRYPOINT ["/bin/bash","entrypoint.sh"]
@@ -182,7 +192,7 @@ VOLUME /var/lib/mysql
 ###
 ####CMD /bin/bash
 
-COPY entrypoint.sh /
-ENTRYPOINT ["/entrypoint.sh"]
+ADD ./entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["/bin/bash","entrypoint.sh"]
 
 CMD ["mysqld"]
