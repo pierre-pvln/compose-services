@@ -42,14 +42,22 @@ RUN sudo rm /etc/localtime && \
 # ==========================================
 # ENTRYPOINT & CMD
 # ==========================================
+#
+# Inspiration: http://goinbigdata.com/docker-run-vs-cmd-vs-entrypoint/
+#
+# Prefer ENTRYPOINT to CMD when building executable Docker image and you need a command always to be executed. 
+# Additionally use CMD if you need to provide extra default arguments that could be overwritten from command line when docker container runs.
+# Choose CMD if you need to provide a default command and/or arguments that can be overwritten from command line when docker container runs.
+#
 
 # Cancel any pre-defined start-up instruction and allow us to use our own.
 #
 ENTRYPOINT []
 
-# Add our own entrypoint scriptn.
+# Add our own entrypoint script.
 #
 ADD ./entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["/bin/bash","entrypoint.sh"]
 
-#CMD /bin/bash
+# Don't need any specific arguments to be fed into entrypoint 
+CMD []
