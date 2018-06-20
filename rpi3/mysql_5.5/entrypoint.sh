@@ -59,7 +59,12 @@ fi
 #
 #
 /usr/sbin/apachectl -k start
+#/usr/sbin/apachectl -D FOREGROUND
 #
 #
+#
+
+# commented out because apache does not work
 #
 exec "$@"
+#

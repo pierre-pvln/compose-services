@@ -148,7 +148,7 @@ RUN sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/my.cnf
 
 # Expose apache2 on port 80 of the container
 #
-EXPOSE 80	
+EXPOSE 80
 
 # Expose mysql on port 3306 of the container
 #
@@ -159,9 +159,14 @@ EXPOSE 3306
 # A key point to be aware of here is that anything after the VOLUME instruction
 # in a Dockerfile will not be able to make changes to that volume
 #
+
+# Volumes for apache2
+#
 VOLUME /var/www/html
 VOLUME /var/log/apache2
 
+# Volume for MySQL
+#
 VOLUME /var/lib/mysql
 
 # ==========================================
@@ -175,7 +180,7 @@ VOLUME /var/lib/mysql
 #
 # Inspiration: http://goinbigdata.com/docker-run-vs-cmd-vs-entrypoint/
 #
-# Prefer ENTRYPOINT to CMD when building executable Docker image and you need a command always to be executed. 
+# Prefer ENTRYPOINT to CMD when building executable Docker image and you need a command always to be executed.
 # Additionally use CMD if you need to provide extra default arguments that could be overwritten from command line when docker container runs.
 # Choose CMD if you need to provide a default command and/or arguments that can be overwritten from command line when docker container runs.
 #
@@ -186,7 +191,7 @@ ENTRYPOINT []
 
 ###ADD ./entrypoint.sh /usr/local/bin/
 ###ENTRYPOINT ["/bin/bash","entrypoint.sh"]
-### 
+###
 #### By default start up apache in the foreground, override with /bin/bash for interative.
 ###CMD /usr/sbin/apache2ctl -D FOREGROUND
 ###
