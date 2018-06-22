@@ -1,5 +1,15 @@
 #!/bin/bash
+# ==========================================
+# Raspberry Pi 3 MySQL 5.5 entrypoint.sh 
+# ==========================================
+
+# This script is started (in the container) when the container is started
 #
+
+# default message
+echo "Running MySql 5.5 entrypoint.sh" 
+
+
 #   help set
 #   -e  Exit immediately if a command exits with a non-zero status.
 set -e
@@ -59,12 +69,10 @@ fi
 #
 #
 /usr/sbin/apachectl -k start
+#
+# Do not start apache2 in foreground mode. Script then waits  
 #/usr/sbin/apachectl -D FOREGROUND
 #
-#
-#
-
-# commented out because apache does not work
 #
 exec "$@"
 #

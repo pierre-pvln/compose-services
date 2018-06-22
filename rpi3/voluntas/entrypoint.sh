@@ -6,5 +6,5 @@
 # This script is started (in the container) when the container is started
 #
 
+# default messag
 echo "Running Voluntas entrypoint.sh" 
-

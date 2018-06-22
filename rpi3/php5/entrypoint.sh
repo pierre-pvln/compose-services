@@ -1,21 +1,14 @@
 #!/bin/bash
+# ==========================================
+# Raspberry Pi 3 PHP5 entrypoint.sh 
+# ==========================================
 
-# Start MYSQL
-# inspiration https://stackoverflow.com/questions/9083408/fatal-error-cant-open-and-lock-privilege-tables-table-mysql-host-doesnt-ex
+# This script is started (in the container) when the container is started
 #
 
-####chown -R mysql /var/lib/mysql
-####chgrp -R mysql /var/lib/mysql
-####service mysql start
+# default message
+echo "Running PHP5 entrypoint.sh" 
 
-# Create Joomla! entries and tables in MySQL database
-#
-####/usr/bin/mysql -uroot -proot --execute="create database joomla_db;
-####    grant all on joomla_db.* to joomla@'localhost' identified by 'joomla';
-####   grant all on joomla_db.* to joomla@'%' identified by 'joomla'; 
-####    flush privileges;"
-
-# Start apache2
+# Start Apache2 in foreground modus
 #
 /usr/sbin/apache2ctl -D FOREGROUND
-
