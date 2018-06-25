@@ -7,4 +7,4 @@
 #
 
 # default message
-echo "Running baseline entrypoint.sh" 
+echo "Running Raspberry Pi 3 Baseline entrypoint.sh" 

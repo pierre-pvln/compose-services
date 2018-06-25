@@ -1,13 +1,13 @@
 #!/bin/bash
 # ==========================================
-# Raspberry Pi 3 PHP5 entrypoint.sh 
+# Raspberry Pi 3 php5 entrypoint.sh 
 # ==========================================
 
 # This script is started (in the container) when the container is started
 #
 
 # default message
-echo "Running PHP5 entrypoint.sh" 
+echo "Running Raspberry Pi 3 php5 entrypoint.sh" 
 
 # Start Apache2 in foreground modus
 #

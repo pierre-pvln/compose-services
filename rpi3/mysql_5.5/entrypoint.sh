@@ -7,7 +7,7 @@
 #
 
 # default message
-echo "Running MySql 5.5 entrypoint.sh" 
+echo "Running Raspberry Pi 3 MySQL 5.5 entrypoint.sh" 
 
 
 #   help set
