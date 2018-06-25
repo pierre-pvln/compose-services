@@ -34,7 +34,7 @@ RUN groupadd --system --gid 995 mysql && \
 RUN sudo apt-get update && \
     sudo apt-get upgrade && \
     sudo apt-get install -y \
-      perl --no-install-recommends && \\
+      perl --no-install-recommends && \
    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENV MYSQL_VERSION 5.5
