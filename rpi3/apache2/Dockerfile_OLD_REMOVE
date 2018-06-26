@@ -10,9 +10,9 @@ MAINTAINER Pierre Veelen <pierre@pvln.nl>
 
 LABEL version="1.0" maintainer="Pierre Veelen <pierre@pvln.nl>"
 
-# ==========================================
+# ===========================
 # START OF INSTALLING APACHE2
-# ==========================================
+# ===========================
 #
 # Inspiration: https://writing.pupius.co.uk/apache-and-php-on-docker-44faef716150
 #              https://github.com/jacksoncage/apache-docker
@@ -45,9 +45,29 @@ ENV APACHE_SERVERNAME=localhost \
 # Enable apache mods.
 RUN a2enmod rewrite
 
+#DBG
+#
+#RUN ls -laR /var/www/
+
+# Copy this repo into place
+# files/folder at host , files/folders in container
+#
+# DOES NOT WORK WHY I DON'T KNOW
+# ADDING FILES ON A VOLUME WORKS WHEN COPIED FROM DOCKER HOST TO THAT VOLUME
+#
+# ADD ./files/default /var/www/html
+
+#DBG
+#
+#RUN ls -laR /var/www/html
+
 # Update the default apache site with the config we created.
 #
 ADD ./conf/apache2-config.conf /etc/apache2/sites-enabled/000-default.conf
+
+#DBG
+#
+#RUN cat /etc/apache2/sites-enabled/000-default.conf
 
 # Change folder to sitename -> change  var/www/site to var/www/html
 # sed -i "s/TextFrom/TextTo/" inWhichFile
@@ -59,12 +79,13 @@ RUN sed -i "s/var\/www\/site/var\/www\/html/" /etc/apache2/sites-enabled/000-def
 #
 RUN chown -Rf ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
 
-# ==========================================
+# ========================= 
 #
 #
 # TODO CHANGE WEBSITE SERVERNAME TO PREVENT WARNING
 #
-# ==========================================
+# =========================
+
 
 # Expose apache2 on port 80 of the container
 #
@@ -78,28 +99,20 @@ EXPOSE 80
 VOLUME /var/www/html
 VOLUME /var/log/apache2
 
-# ==========================================
+# =========================
 # END OF INSTALLING APACHE2
-# ==========================================
+# =========================
 
-# ==========================================
+#
 # ENTRYPOINT & CMD
-# ==========================================
-
-#
-# Inspiration: http://goinbigdata.com/docker-run-vs-cmd-vs-entrypoint/
-#
-# Prefer ENTRYPOINT to CMD when building executable Docker image and you need a command always to be executed.
-# Additionally use CMD if you need to provide extra default arguments that could be overwritten from command line when docker container runs.
-# Choose CMD if you need to provide a default command and/or arguments that can be overwritten from command line when docker container runs.
-#
-
+# ======
 # Cancel pre-defined start-up instruction and allow us to use our own.
-#
-ENTRYPOINT []
+#ENTRYPOINT []
 
 ADD ./entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["/bin/bash","entrypoint.sh"]
+ 
+# By default start up apache in the foreground, override with /bin/bash for interative.
+CMD /usr/sbin/apache2ctl -D FOREGROUND
 
-# Don't need any specific arguments to be fed into entrypoint 
-CMD []
+#CMD /bin/bash

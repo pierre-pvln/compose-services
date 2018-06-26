@@ -7,7 +7,7 @@
 # Optimized to only apt-update and clean only once
 #
 
-# Import baseline image
+# Import previous building block image apache2
 #
 FROM pvln/rpi3-lvl1-apache2:1.0
 
