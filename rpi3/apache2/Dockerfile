@@ -2,7 +2,7 @@
 # Raspberry Pi 3 Apache2 Dockerfile
 # ==========================================
 
-# Import baseline image
+# Import previous building block image baseline
 #
 FROM pvln/rpi3-lvl1-baseline:1.0
 
