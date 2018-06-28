@@ -9,7 +9,7 @@
 
 # Import baseline image
 #
-FROM pvln/rpi3-lvl1-baseline:1.0
+FROM pvln/ubuntu16.04-lvl1-baseline:1.0
 
 MAINTAINER Pierre Veelen <pierre@pvln.nl>
 
