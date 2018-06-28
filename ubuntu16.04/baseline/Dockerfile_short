@@ -1,0 +1,63 @@
+# ==========================================
+# Ubuntu 16.04 Baseline Dockerfile
+# ==========================================
+
+# Import baseline image
+#
+FROM ubuntu:16.04
+
+MAINTAINER Pierre Veelen <pierre@pvln.nl>
+
+LABEL version="1.0" maintainer="Pierre Veelen <pierre@pvln.nl>"
+
+# ==========================================
+# START OF INSTALLING UTILITIES AND DEFAULTS
+# ==========================================
+
+RUN sudo apt-get update && \
+    sudo apt-get upgrade -y && \
+    sudo apt-get install -y \
+    apt-utils \
+    nano \
+    ssh \
+    net-tools && \
+    sudo apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# ==========================================
+# CONFIGURE TIMEZONE AND LOCALTIME
+# ==========================================
+#
+# Inspiration: https://www.raspberrypi.org/forums/viewtopic.php?t=4977
+#
+RUN sudo rm /etc/localtime && \
+    sudo ln -s /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime && \
+    sudo rm /etc/timezone && \
+    echo "Europe/Amsterdam" | sudo tee /etc/timezone 
+
+# ==========================================
+# END OF UTILITIES AND DEFAULTS
+# ==========================================
+
+# ==========================================
+# ENTRYPOINT & CMD
+# ==========================================
+#
+# Inspiration: http://goinbigdata.com/docker-run-vs-cmd-vs-entrypoint/
+#
+# Prefer ENTRYPOINT to CMD when building executable Docker image and you need a command always to be executed. 
+# Additionally use CMD if you need to provide extra default arguments that could be overwritten from command line when docker container runs.
+# Choose CMD if you need to provide a default command and/or arguments that can be overwritten from command line when docker container runs.
+#
+
+# Cancel any pre-defined start-up instruction and allow us to use our own.
+#
+ENTRYPOINT []
+
+# Add our own entrypoint script.
+#
+ADD ./entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["/bin/bash","entrypoint.sh"]
+
+# Don't need any specific arguments to be fed into entrypoint 
+CMD []
