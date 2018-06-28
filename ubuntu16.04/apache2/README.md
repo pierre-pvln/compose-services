@@ -1,4 +1,4 @@
-Configs en scripts to create an Apache2 container on top of Baseline image on Raspberry Pi 3
+Configs en scripts to create an Apache2 container on top of Baseline image on Ubuntu 16.04
 
 __Docker configuration files:__
 * Dockerfile_short : configuration as add-on to a previous container (a short file)

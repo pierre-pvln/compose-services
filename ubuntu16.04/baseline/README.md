@@ -1,6 +1,7 @@
-Configs en scripts to create a Baseline container image on Raspberry Pi 3
+Configs en scripts to create a Baseline container image on Ubuntu 16.04
 
 This Docker files creates the baseline image with standard utilities:
+- sudo
 - apt
 - ssh
 - nano

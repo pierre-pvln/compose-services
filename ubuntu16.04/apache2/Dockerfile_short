@@ -1,5 +1,5 @@
 # ==========================================
-# Ubuntu 16.04 Apache2 Dockerfile
+# Ubuntu 16.04 Apache2 Dockerfile_short
 # ==========================================
 
 # Import previous building block image baseline
