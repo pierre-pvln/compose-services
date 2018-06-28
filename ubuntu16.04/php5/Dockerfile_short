@@ -1,5 +1,5 @@
 # ==========================================
-# Raspberry Pi 3 PHP5 Dockerfile
+# Raspberry Pi 3 PHP5 Dockerfile_short
 # ==========================================
 
 #
@@ -9,7 +9,7 @@
 
 # Import previous building block image apache2
 #
-FROM pvln/rpi3-lvl1-apache2:1.0
+FROM pvln/ubuntu16.04-lvl1-apache2:1.0
 
 MAINTAINER Pierre Veelen <pierre@pvln.nl>
 
