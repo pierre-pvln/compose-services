@@ -14,6 +14,11 @@ LABEL version="1.0" maintainer="Pierre Veelen <pierre@pvln.nl>"
 # START OF INSTALLING UTILITIES AND DEFAULTS
 # ==========================================
 
+# First install sudo as it was removed as base-package in Ubuntu 16.04
+RUN apt-get update && \
+    apt-get install -y sudo && \
+	rm -rf /var/lib/apt/lists/*
+
 RUN sudo apt-get update && \
     sudo apt-get upgrade -y && \
     sudo apt-get install -y \
