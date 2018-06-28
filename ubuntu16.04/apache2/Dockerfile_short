@@ -1,10 +1,10 @@
 # ==========================================
-# Raspberry Pi 3 Apache2 Dockerfile
+# Ubuntu 16.04 Apache2 Dockerfile
 # ==========================================
 
 # Import previous building block image baseline
 #
-FROM pvln/rpi3-lvl1-baseline:1.0
+FROM pvln/ubuntu16.04-lvl1-baseline:1.0
 
 MAINTAINER Pierre Veelen <pierre@pvln.nl>
 
