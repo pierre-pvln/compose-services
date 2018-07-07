@@ -62,8 +62,9 @@ LABEL version="1.0" maintainer="Pierre Veelen <pierre@pvln.nl>"
 # START OF INSTALLING VOLUNTAS
 # ==========================================
 #
-
-
+# reset ownership of website files
+#
+RUN chown -Rf ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
 
 # ==========================================
 # END OF INSTALLING VOLUNTAS

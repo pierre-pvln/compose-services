@@ -146,7 +146,9 @@ RUN sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/my.cnf
 # START OF INSTALLING VOLUNTAS
 # ==========================================
 #
-
+# reset ownership of website files
+#
+RUN chown -Rf ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
 
 
 # ==========================================
