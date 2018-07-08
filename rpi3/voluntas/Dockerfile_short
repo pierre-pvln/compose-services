@@ -7,13 +7,12 @@
 # Optimized to only apt-date and clean only once
 #
 
-# Import previous building block image php5
+# Import previous building block image mysql_5.5
 #
 FROM pvln/rpi3-lvl1-mysql_5.5:1.0
 
-MAINTAINER Pierre Veelen <pierre@pvln.nl>
-
-LABEL version="1.0" maintainer="Pierre Veelen <pierre@pvln.nl>"
+LABEL version="1.0" \
+      maintainer="Pierre Veelen <pierre@pvln.nl>"
 
 ##### ==========================================
 ##### START OF INSTALLING MYSQL

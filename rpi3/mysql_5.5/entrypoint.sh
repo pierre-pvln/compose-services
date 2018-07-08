@@ -8,7 +8,14 @@
 
 # default message
 echo "Running Raspberry Pi 3 MySQL 5.5 entrypoint.sh" 
-
+echo "============================================="
+# list versions
+sudo apache2 -v
+echo "============================================="
+sudo php -v
+echo "============================================="
+sudo mysql -v
+echo "============================================="
 
 #   help set
 #   -e  Exit immediately if a command exits with a non-zero status.

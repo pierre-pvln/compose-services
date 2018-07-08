@@ -9,6 +9,7 @@
 # default message
 echo "Running Raspberry Pi 3 Voluntas entrypoint.sh"
 echo "============================================="
+# list versions
 sudo apache2 -v
 echo "============================================="
 sudo php -v

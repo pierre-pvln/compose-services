@@ -8,6 +8,12 @@
 
 # default message
 echo "Running Raspberry Pi 3 php5 entrypoint.sh" 
+echo "============================================="
+# list versions
+sudo apache2 -v
+echo "============================================="
+sudo php -v
+echo "============================================="
 
 # Start Apache2 in foreground modus
 #
