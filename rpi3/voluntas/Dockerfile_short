@@ -79,7 +79,9 @@ RUN sudo openssl req \
 
 # Create a strong Diffie-Hellman group, which is used in negotiating Perfect Forward Secrecy with clients.
 #
-RUN sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+# should also be enabled in ssl-params.conf file
+#
+#RUN sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 
 # Update the default apache site with the ssl config we created.
 #
