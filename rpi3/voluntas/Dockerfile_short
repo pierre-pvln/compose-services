@@ -87,7 +87,20 @@ RUN sudo openssl req \
 ADD ./conf/ssl-params.conf /etc/apache2/conf-available/ssl-params.conf
 ADD ./conf/voluntas-ssl.conf /etc/apache2/sites-available/voluntas-ssl.conf
 
-# Enable mod_ssl, the Apache SSL module, and mod_headers, needed by some of the settings in our SSL snippet
+
+#######
+#
+# TODO: copy config file to /etc/apache2/sites-available/ and then activate it with site enable command
+#       and also disable the default site
+#       CHANGE ALSO IN APACHE2 CONFIG FILES  
+#
+#
+######
+# Set redirection of HTTP to HTTPS
+ADD ./conf/voluntas-config.conf /etc/apache2/sites-enabled/000-default.conf
+
+# Enable mod_ssl, the Apache SSL module, 
+# and mod_headers, needed by some of the settings in our SSL snippet
 #
 RUN sudo a2enmod ssl
 RUN sudo a2enmod headers
