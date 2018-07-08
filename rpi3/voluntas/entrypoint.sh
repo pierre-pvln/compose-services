@@ -7,7 +7,12 @@
 #
 
 # default message
-echo "Running Raspberry Pi 3 Voluntas entrypoint.sh" 
+echo "Running Raspberry Pi 3 Voluntas entrypoint.sh"
+echo "============================================="
+sudo apache2 -v
+echo "============================================="
+sudo mysql -v
+echo "============================================="
 
 #   help set
 #   -e  Exit immediately if a command exits with a non-zero status.
