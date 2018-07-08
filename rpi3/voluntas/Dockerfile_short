@@ -69,16 +69,17 @@ LABEL version="1.0" \
 # Create a self-signed key and certificate pair with OpenSSL
 RUN sudo openssl req \
      -x509 \
-	 -nodes \ 
+	 -nodes \
 	 -days 365 \
 	 -newkey rsa:2048 \
      -keyout /etc/ssl/private/apache-selfsigned.key \
 	 -out /etc/ssl/certs/apache-selfsigned.crt \
      -subj "/C=NL/ST=Limburg/L=Posterholt/O=pvln/OU=private/CN=voluntas.nl"
-	 
+
 # Create a strong Diffie-Hellman group, which is used in negotiating Perfect Forward Secrecy with clients.
 #
 # should also be enabled in ssl-params.conf file
+#
 #RUN sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 
 # Update the default apache site with the ssl config we created.
