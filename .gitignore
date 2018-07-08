@@ -40,3 +40,4 @@ Thumbs.db
 # secret files
 ##
 secrets/*
+*.jpa

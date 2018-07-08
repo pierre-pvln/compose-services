@@ -62,6 +62,43 @@ LABEL version="1.0" maintainer="Pierre Veelen <pierre@pvln.nl>"
 # START OF INSTALLING VOLUNTAS
 # ==========================================
 #
+# Creating SSL certificate for website as site runs on HTTPS
+#
+# Inspiration: https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-apache-in-ubuntu-16-04
+#
+
+# Create a self-signed key and certificate pair with OpenSSL
+RUN sudo openssl req \
+     -x509 \
+	 -nodes \ 
+	 -days 365 \
+	 -newkey rsa:2048 \
+     -keyout /etc/ssl/private/apache-selfsigned.key \
+	 -out /etc/ssl/certs/apache-selfsigned.crt \
+     -subj "/C=NL/ST=Limburg/L=Posterholt/O=pvln/OU=private/CN=voluntas.nl"
+	 
+# Create a strong Diffie-Hellman group, which is used in negotiating Perfect Forward Secrecy with clients.
+#
+sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+
+# Update the default apache site with the ssl config we created.
+#
+ADD ./conf/ssl-params.conf /etc/apache2/conf-available/ssl-params.conf
+ADD ./conf/voluntas-ssl.conf /etc/apache2/sites-available/voluntas-ssl.conf
+
+# Enable mod_ssl, the Apache SSL module, and mod_headers, needed by some of the settings in our SSL snippet
+#
+RUN sudo a2enmod ssl
+RUN sudo a2enmod headers
+
+# Enable SSL Virtual Host
+#
+RUN sudo a2ensite voluntas-ssl
+
+# enable ssl-params.conf file, to read in the values we set
+#
+RUN sudo a2enconf ssl-params
+
 # reset ownership of website files
 #
 RUN chown -Rf ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
@@ -74,9 +111,13 @@ RUN chown -Rf ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
 # START OF PORTS AND VOLUMES
 # ==========================================
 
-# Expose apache2 on port 80 of the container
+# Expose apache2 on port 80 and 443 of the container
 #
+# HTTP traffic
 EXPOSE 80
+
+# HTTPS traffic
+EXPOSE 443  
 
 # Expose mysql on port 3306 of the container
 #
