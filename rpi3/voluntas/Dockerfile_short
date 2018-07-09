@@ -14,49 +14,6 @@ FROM pvln/rpi3-lvl1-mysql_5.5:1.0
 LABEL version="1.0" \
       maintainer="Pierre Veelen <pierre@pvln.nl>"
 
-##### ==========================================
-##### START OF INSTALLING MYSQL
-##### ==========================================
-####
-##### add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-##### https://manpages.debian.org/jessie/passwd/groupadd.8.en.html
-##### https://manpages.debian.org/jessie/passwd/useradd.8.en.html
-##### 
-##### raspberry pi uses system groups 999(spi), 998(i2c), 997(gpio)
-##### http://www.arne.jachens.de/RaspberryPi#SPIBus
-##### and therefore gid is set to 995.
-#####
-####RUN groupadd --system --gid 995 mysql && \ 
-####    useradd --system --uid 995 -g mysql mysql
-####
-##### Important to update the packages list before installing since they are removed after the install
-####RUN sudo apt-get update && \
-####    sudo apt-get upgrade && \
-####    sudo apt-get install -y \
-####      perl --no-install-recommends && \
-####   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-####
-####ENV MYSQL_VERSION 5.5
-####
-##### the "/var/lib/mysql" stuff here is because the mysql-server postinst doesn't have an explicit way to disable 
-##### the mysql_install_db codepath besides having a database already "configured" (ie, stuff in /var/lib/mysql/mysql)
-##### also, we set debconf keys to make APT a little quieter
-####RUN { \
-####		echo mysql-server mysql-server/data-dir select ''; \
-####		echo mysql-server mysql-server/root-pass password ''; \
-####		echo mysql-server mysql-server/re-root-pass password ''; \
-####		echo mysql-server mysql-server/remove-test-db select false; \
-####	} | debconf-set-selections \
-####	&& apt-get update && apt-get install -y mysql-server="${MYSQL_VERSION}"* && rm -rf /var/lib/apt/lists/* \
-####	&& rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql && chown -R mysql:mysql /var/lib/mysql
-####
-##### comment out a few problematic configuration values
-####RUN sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/my.cnf
-####
-##### ==========================================
-##### END OF INSTALLING MYSQL
-##### ==========================================
-
 # ==========================================
 # START OF INSTALLING VOLUNTAS
 # ==========================================
@@ -87,7 +44,6 @@ RUN sudo openssl req \
 #
 ADD ./conf/ssl-params.conf /etc/apache2/conf-available/ssl-params.conf
 ADD ./conf/voluntas-ssl.conf /etc/apache2/sites-available/voluntas-ssl.conf
-
 
 #######
 #
@@ -132,7 +88,7 @@ RUN chown -Rf ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
 EXPOSE 80
 
 # HTTPS traffic
-EXPOSE 443  
+EXPOSE 443
 
 # Expose mysql on port 3306 of the container
 #

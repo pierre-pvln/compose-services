@@ -11,9 +11,8 @@
 #
 FROM pvln/rpi3-lvl1-baseline:1.0
 
-MAINTAINER Pierre Veelen <pierre@pvln.nl>
-
-LABEL version="1.0" maintainer="Pierre Veelen <pierre@pvln.nl>"
+LABEL version="1.0" \
+      maintainer="Pierre Veelen <pierre@pvln.nl>"
 
 # ==========================================
 # START OF INSTALLING APACHE2

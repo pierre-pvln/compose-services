@@ -1,5 +1,5 @@
 # ==========================================
-# Raspberry Pi 3 voluntas Dockerfile
+# Ubuntu 16.04 voluntas Dockerfile
 # ==========================================
 
 #
@@ -7,63 +7,72 @@
 # Optimized to only apt-date and clean only once
 #
 
-# Import previous building block image php5
+# Import previous building block image mysql_5.5
 #
-FROM pvln/rpi3-lvl1-mysql_5.5:1.0
+FROM pvln/ubuntu16.04-lvl1-mysql_5.5:1.0
 
-MAINTAINER Pierre Veelen <pierre@pvln.nl>
-
-LABEL version="1.0" maintainer="Pierre Veelen <pierre@pvln.nl>"
-
-##### ==========================================
-##### START OF INSTALLING MYSQL
-##### ==========================================
-####
-##### add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-##### https://manpages.debian.org/jessie/passwd/groupadd.8.en.html
-##### https://manpages.debian.org/jessie/passwd/useradd.8.en.html
-##### 
-##### raspberry pi uses system groups 999(spi), 998(i2c), 997(gpio)
-##### http://www.arne.jachens.de/RaspberryPi#SPIBus
-##### and therefore gid is set to 995.
-#####
-####RUN groupadd --system --gid 995 mysql && \ 
-####    useradd --system --uid 995 -g mysql mysql
-####
-##### Important to update the packages list before installing since they are removed after the install
-####RUN sudo apt-get update && \
-####    sudo apt-get upgrade && \
-####    sudo apt-get install -y \
-####      perl --no-install-recommends && \
-####   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-####
-####ENV MYSQL_VERSION 5.5
-####
-##### the "/var/lib/mysql" stuff here is because the mysql-server postinst doesn't have an explicit way to disable 
-##### the mysql_install_db codepath besides having a database already "configured" (ie, stuff in /var/lib/mysql/mysql)
-##### also, we set debconf keys to make APT a little quieter
-####RUN { \
-####		echo mysql-server mysql-server/data-dir select ''; \
-####		echo mysql-server mysql-server/root-pass password ''; \
-####		echo mysql-server mysql-server/re-root-pass password ''; \
-####		echo mysql-server mysql-server/remove-test-db select false; \
-####	} | debconf-set-selections \
-####	&& apt-get update && apt-get install -y mysql-server="${MYSQL_VERSION}"* && rm -rf /var/lib/apt/lists/* \
-####	&& rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql && chown -R mysql:mysql /var/lib/mysql
-####
-##### comment out a few problematic configuration values
-####RUN sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/my.cnf
-####
-##### ==========================================
-##### END OF INSTALLING MYSQL
-##### ==========================================
+LABEL version="1.0" \
+      maintainer="Pierre Veelen <pierre@pvln.nl>"
 
 # ==========================================
 # START OF INSTALLING VOLUNTAS
 # ==========================================
 #
+# Creating SSL certificate for website as site runs on HTTPS
+#
+# Inspiration: https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-apache-in-ubuntu-16-04
+#
 
+# Create a self-signed key and certificate pair with OpenSSL
+RUN sudo openssl req \
+     -x509 \
+	 -nodes \
+	 -days 365 \
+	 -newkey rsa:2048 \
+     -keyout /etc/ssl/private/apache-selfsigned.key \
+	 -out /etc/ssl/certs/apache-selfsigned.crt \
+#     -subj "/C=NL/ST=Limburg/L=Posterholt/O=pvln/OU=private/CN=voluntas.nl"
+     -subj "/C=NL/ST=Limburg/L=Posterholt/O=pvln/OU=private/CN=192.168.2.11"
 
+# Create a strong Diffie-Hellman group, which is used in negotiating Perfect Forward Secrecy with clients.
+#
+# should also be enabled in ssl-params.conf file
+#
+#RUN sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+
+# Update the default apache site with the ssl config we created.
+#
+ADD ./conf/ssl-params.conf /etc/apache2/conf-available/ssl-params.conf
+ADD ./conf/voluntas-ssl.conf /etc/apache2/sites-available/voluntas-ssl.conf
+
+#######
+#
+# TODO: copy config file to /etc/apache2/sites-available/ and then activate it with site enable command
+#       and also disable the default site
+#       CHANGE ALSO IN APACHE2 CONFIG FILES  
+#
+#
+######
+# Set redirection of HTTP to HTTPS
+ADD ./conf/voluntas-config.conf /etc/apache2/sites-enabled/000-default.conf
+
+# Enable mod_ssl, the Apache SSL module, 
+# and mod_headers, needed by some of the settings in our SSL snippet
+#
+RUN sudo a2enmod ssl
+RUN sudo a2enmod headers
+
+# Enable SSL Virtual Host
+#
+RUN sudo a2ensite voluntas-ssl
+
+# enable ssl-params.conf file, to read in the values we set
+#
+RUN sudo a2enconf ssl-params
+
+# reset ownership of website files
+#
+RUN chown -Rf ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
 
 # ==========================================
 # END OF INSTALLING VOLUNTAS
@@ -73,9 +82,13 @@ LABEL version="1.0" maintainer="Pierre Veelen <pierre@pvln.nl>"
 # START OF PORTS AND VOLUMES
 # ==========================================
 
-# Expose apache2 on port 80 of the container
+# Expose apache2 on port 80 and 443 of the container
 #
+# HTTP traffic
 EXPOSE 80
+
+# HTTPS traffic
+EXPOSE 443
 
 # Expose mysql on port 3306 of the container
 #

@@ -1,5 +1,5 @@
 # ==========================================
-# Raspberry Pi 3 PHP5 Dockerfile_short
+# Ubuntu 16.04 PHP5 Dockerfile_short
 # ==========================================
 
 #
@@ -11,9 +11,8 @@
 #
 FROM pvln/ubuntu16.04-lvl1-apache2:1.0
 
-MAINTAINER Pierre Veelen <pierre@pvln.nl>
-
-LABEL version="1.0" maintainer="Pierre Veelen <pierre@pvln.nl>"
+LABEL version="1.0" \
+      maintainer="Pierre Veelen <pierre@pvln.nl>"
 
 # ==========================================
 # START OF INSTALLING PHP5

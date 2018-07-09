@@ -1,5 +1,5 @@
 # ==========================================
-# Raspberry Pi 3 MySQL 5.5 Dockerfile
+# Ubuntu 16.04 MySQL 5.5 Dockerfile
 # ==========================================
 
 #
@@ -9,17 +9,24 @@
 
 # Import previous building block image php5
 #
-FROM pvln/rpi3-lvl1-php5:1.0
+FROM pvln/ubuntu16.04-lvl1-php5:1.0
 
-MAINTAINER Pierre Veelen <pierre@pvln.nl>
-
-LABEL version="1.0" maintainer="Pierre Veelen <pierre@pvln.nl>"
+LABEL version="1.0" \
+      maintainer="Pierre Veelen <pierre@pvln.nl>"
 
 # ==========================================
 # START OF INSTALLING MYSQL
 # ==========================================
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
+#
+########
+# 
+# TODO: CHECK IF THIS IS ALSO NEEDED FOR UBUNTU SYSTEM;
+#       OR THAT OTHER VALUES ARE REQUIRED
+#
+########
+#
 # https://manpages.debian.org/jessie/passwd/groupadd.8.en.html
 # https://manpages.debian.org/jessie/passwd/useradd.8.en.html
 # 
