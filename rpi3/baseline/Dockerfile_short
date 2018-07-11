@@ -13,6 +13,26 @@ LABEL version="1.0" \
 # START OF INSTALLING UTILITIES AND DEFAULTS
 # ==========================================
 
+# ==========================================
+# SET THE LOCALE
+# ==========================================
+#
+# C = POSIX standards-compliant locale,
+# C.utf8 = POSIX standards-compliant locale, extended to allow the basic use of UTF-8.
+# UTF-8 is required as ASCII leads to some problems 
+#
+# en_US.utf8 = American English UTF-8 locale.
+# It "knows" which non-ASCII Unicode characters are upper/lower case pairs, and sorts them together, 
+# upper case immediately before lower case. It also has default sorting orders defined for various non-Latin alphabets. 
+# 
+# Inspiration: http://jaredmarkell.com/docker-and-locales/
+#
+
+RUN locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8 \
+    LANGUAGE en_US:en \
+    LC_ALL en_US.UTF-8
+
 RUN sudo apt-get update && \
     sudo apt-get upgrade -y && \
     sudo apt-get install -y \
