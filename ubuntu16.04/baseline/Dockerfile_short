@@ -13,6 +13,12 @@ LABEL version="1.0" \
 # START OF INSTALLING UTILITIES AND DEFAULTS
 # ==========================================
 
+# First install sudo as it was removed as base-package in Ubuntu 16.04
+RUN apt-get clean && \
+    apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y sudo
+
 # ==========================================
 # SET THE LOCALE
 # ==========================================
@@ -26,31 +32,31 @@ LABEL version="1.0" \
 # upper case immediately before lower case. It also has default sorting orders defined for various non-Latin alphabets.
 #
 # Inspiration: http://jaredmarkell.com/docker-and-locales/
+#              https://blog.mkowalski.net/2016/05/17/solving-locale-issues-with-docker-containers/
 #
 
-RUN apt-get clean && \
-    apt-get update && \
-    sudo apt-get upgrade -y && \
-    apt-get install -y locales && \
-    locale-gen en_US.UTF-8
-
-ENV LANG en_US.UTF-8 \
-    LANGUAGE en_US:en \
-    LC_ALL en_US.UTF-8
+# make sure that locales package is available
+RUN apt-get install --reinstall -y locales
+# uncomment chosen locale to enable it's generation
+RUN sed -i 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+# generate chosen locale
+RUN locale-gen en_US.UTF-8
+# set system-wide locale settings
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US
+ENV LC_ALL en_US.UTF-8
+# verify modified configuration
+RUN dpkg-reconfigure --frontend noninteractive locales
 
 # ==========================================
 # INSTALLING AND CONFIGURING UTILITIES
 # ==========================================
 
-# First install sudo as it was removed as base-package in Ubuntu 16.04
-RUN apt-get update && \
-    apt-get install -y sudo
-
 RUN sudo apt-get install -y \
-    apt-utils \
-    nano \
-    ssh \
-    net-tools && \
+       apt-utils \
+       nano \
+       ssh \
+       net-tools && \
     sudo apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
