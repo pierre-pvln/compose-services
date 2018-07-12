@@ -57,7 +57,8 @@ RUN sed -i "s/error_reporting = .*$/error_reporting = E_ERROR | E_WARNING | E_PA
 RUN sudo update-alternatives --set php /usr/bin/php5.6
 
 # And cleanup php 7.* as we don't want that 
-RUN sudo apt-get purge php7.*
+RUN sudo apt-get -y purge php7.* && \
+    sudo apt-get -y autoremove
 
 # Enable apache mods for PHP.
 #
