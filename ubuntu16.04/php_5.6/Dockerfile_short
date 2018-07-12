@@ -21,9 +21,9 @@ LABEL version="1.0" \
 # MOVE TO BASELINE IMAGE !!
 # Setting locale
 #
-RUN sudo apt-get update && \
-    sudo apt-get install -y language-pack-en && \
-    sudo update-locale LANG="en_US.UTF-8" LANGUAGE="en_US"
+#RUN sudo apt-get update && \
+#    sudo apt-get install -y language-pack-en && \
+#    sudo update-locale LANG="en_US.UTF-8" LANGUAGE="en_US"
 # MOVE TO BASELINE IMAGE !!
 
 
@@ -34,8 +34,8 @@ RUN sudo apt-get update && \
 # To prevent error message: "sudo: add-apt-repository: command not found"
 #
 
-#RUN sudo apt-get update && \
-#    sudo apt-get install -y software-properties-common
+RUN sudo apt-get update && \
+    sudo apt-get install -y software-properties-common
 
 # And to prevent error:  "'ascii' codec can't decode byte 0xc5 in position 92: ordinal not in range(128)" 
 # https://askubuntu.com/questions/490468/add-apt-repository-throws-python-error-unicodedecodeerror-ascii-codec-cant
