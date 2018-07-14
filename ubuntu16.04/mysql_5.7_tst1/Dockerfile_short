@@ -105,7 +105,4 @@ ENTRYPOINT []
 ADD ./entrypoint.sh /usr/local/bin/
 #ENTRYPOINT ["/bin/bash","entrypoint.sh"]
 
-#CMD ["mysqld"]
-
-#start container in bash command mode
-CMD ["/bin/bash"]
+CMD ["mysqld"]
