@@ -22,7 +22,7 @@ LABEL version="1.0" \
 #
 RUN groupadd -r mysql && \
     useradd -r -g mysql mysql
-	
+
 # Important to update the packages list before installing since they are removed after the install
 RUN sudo apt-get update && \
     sudo apt-get upgrade -y && \

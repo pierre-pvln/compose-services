@@ -7,7 +7,7 @@
 #
 
 # default message
-echo "Running Ubuntu 16.04 MySQL 5.5 entrypoint.sh" 
+echo "Running Ubuntu 16.04 MySQL 5.7 entrypoint.sh" 
 echo "============================================="
 # list versions
 sudo apache2 -v
@@ -37,7 +37,10 @@ if [ "$1" = 'mysqld' ]; then
 		fi
 
 		echo 'Initializing database'
-                mysql_install_db --datadir="$DATADIR"
+                echo 'tot hier gekomen :-)'
+#                find / -name mysqld*
+#                mysql_install_db --datadir="$DATADIR"
+                /usr/sbin/mysqld --initialize-insecure
 		echo 'Database initialized'
 
 		# These statements _must_ be on individual lines, and _must_ end with
