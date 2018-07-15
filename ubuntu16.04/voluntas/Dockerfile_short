@@ -70,6 +70,12 @@ RUN sudo a2ensite voluntas-ssl
 #
 RUN sudo a2enconf ssl-params
 
+#add some dafault files to check webserver and php functionality
+ADD ./files/default/* /var/www/html
+
+#add the kickstarter files to install/restore site from back-up
+ADD ./files/kickstart/* /var/www/html
+
 # reset ownership of website files
 #
 RUN chown -Rf ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
