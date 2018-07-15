@@ -63,6 +63,7 @@ RUN echo '[mysqld]\nskip-host-cache\nskip-name-resolve' > /etc/mysql/conf.d/dock
 
 # Expose apache2 on port 80 of the container
 #
+# HTTP traffic			  
 EXPOSE 80
 
 # Expose mysql on port 3306 of the container

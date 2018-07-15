@@ -1,5 +1,5 @@
 # ==========================================
-# Ubuntu 16.04 voluntas Dockerfile
+# Ubuntu 16.04 Voluntas Dockerfile
 # ==========================================
 
 #
@@ -7,7 +7,7 @@
 # Optimized to only apt-date and clean only once
 #
 
-# Import previous building block image mysql_5.5
+# Import previous building block image mysql_5.7
 #
 FROM pvln/ubuntu16.04-lvl1-mysql_5.7:1.0
 
@@ -72,7 +72,7 @@ RUN sudo a2enconf ssl-params
 
 # reset ownership of website files
 #
-RUN sudo chown -Rf ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
+#RUN sudo chown -Rf ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html
 
 # ==========================================
 # END OF INSTALLING VOLUNTAS
