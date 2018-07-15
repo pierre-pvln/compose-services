@@ -9,7 +9,7 @@
 
 # Import previous building block image mysql_5.5
 #
-FROM pvln/ubuntu16.04-lvl1-mysql_5.5:1.0
+FROM pvln/ubuntu16.04-lvl1-mysql_5.7:1.0
 
 LABEL version="1.0" \
       maintainer="Pierre Veelen <pierre@pvln.nl>"
