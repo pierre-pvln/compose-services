@@ -42,8 +42,9 @@ RUN sudo apt-get update && \
 	 php5.6-xcache \
 	 php5.6-mysql \
 	 php5.6-curl \
-	 php5.6-gd && \
-   sudo apt-get clean && \
+	 php5.6-gd \
+     php5.6-zip && \
+	 sudo apt-get clean && \
    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #Update the PHP.ini file, enable <? ?> tags and quieten logging.
