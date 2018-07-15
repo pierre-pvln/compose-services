@@ -101,14 +101,14 @@ _get_config() {
 	"$@" --verbose --help --log-bin-index="$(mktemp -u)" 2>/dev/null | awk '$1 == "'"$conf"'" { print $2; exit }'
 }
 
-# allow the container to be started with `--user`
-if [ "$1" = 'mysqld' -a -z "$wantHelp" -a "$(id -u)" = '0' ]; then
-	_check_config "$@"
-	DATADIR="$(_get_config 'datadir' "$@")"
-	mkdir -p "$DATADIR"
-	chown -R mysql:mysql "$DATADIR"
-	exec gosu mysql "$BASH_SOURCE" "$@"
-fi
+#### allow the container to be started with `--user`
+###if [ "$1" = 'mysqld' -a -z "$wantHelp" -a "$(id -u)" = '0' ]; then
+###	_check_config "$@"
+###	DATADIR="$(_get_config 'datadir' "$@")"
+###	mkdir -p "$DATADIR"
+###	chown -R mysql:mysql "$DATADIR"
+###	exec gosu mysql "$BASH_SOURCE" "$@"
+###fi
 
 if [ "$1" = 'mysqld' -a -z "$wantHelp" ]; then
 	# still need to check config, container may have started with --user
